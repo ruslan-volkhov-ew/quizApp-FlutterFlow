@@ -159,6 +159,20 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelText: 'Email Address',
+                                            helperStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
                                             hintText: 'Enter your email...',
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
@@ -227,6 +241,20 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                               !_model.passwordVisibility,
                                           decoration: InputDecoration(
                                             labelText: 'Password',
+                                            helperStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
                                             hintText: 'Enter your password...',
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
