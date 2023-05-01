@@ -189,7 +189,7 @@ class _ScorePageWidgetState extends State<ScorePageWidget>
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'You have got',
+                            text: 'You have got ',
                             style: TextStyle(),
                           ),
                           TextSpan(
