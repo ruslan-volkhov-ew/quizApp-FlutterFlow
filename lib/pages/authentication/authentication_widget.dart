@@ -117,7 +117,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
               Expanded(
                 child: Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(20.0, 60.0, 20.0, 200.0),
+                      EdgeInsetsDirectional.fromSTEB(20.0, 60.0, 20.0, 0.0),
                   child: DefaultTabController(
                     length: 2,
                     initialIndex: 0,
