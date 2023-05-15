@@ -7,3 +7,4 @@ export '/pages/create_quiz_set/create_quiz_set_widget.dart'
 export '/pages/add_quiz/add_quiz_widget.dart' show AddQuizWidget;
 export '/pages/authentication/authentication_widget.dart'
     show AuthenticationWidget;
+export '/pages/log_out/log_out_widget.dart' show LogOutWidget;

@@ -4,11 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'quiz_sets_model.dart';
-export 'quiz_sets_model.dart';
+import 'quiz_sets_copy_model.dart';
+export 'quiz_sets_copy_model.dart';
 
-class QuizSetsWidget extends StatefulWidget {
-  const QuizSetsWidget({
+class QuizSetsCopyWidget extends StatefulWidget {
+  const QuizSetsCopyWidget({
     Key? key,
     required this.title,
     required this.description,
@@ -24,11 +24,11 @@ class QuizSetsWidget extends StatefulWidget {
   final String? coverImage;
 
   @override
-  _QuizSetsWidgetState createState() => _QuizSetsWidgetState();
+  _QuizSetsCopyWidgetState createState() => _QuizSetsCopyWidgetState();
 }
 
-class _QuizSetsWidgetState extends State<QuizSetsWidget> {
-  late QuizSetsModel _model;
+class _QuizSetsCopyWidgetState extends State<QuizSetsCopyWidget> {
+  late QuizSetsCopyModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -39,7 +39,7 @@ class _QuizSetsWidgetState extends State<QuizSetsWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => QuizSetsModel());
+    _model = createModel(context, () => QuizSetsCopyModel());
   }
 
   @override
@@ -249,7 +249,7 @@ class _QuizSetsWidgetState extends State<QuizSetsWidget> {
                 ),
                 alignment: AlignmentDirectional(0.0, 0.0),
                 child: Icon(
-                  Icons.add,
+                  Icons.play_arrow,
                   color: Colors.white,
                   size: 24.0,
                 ),

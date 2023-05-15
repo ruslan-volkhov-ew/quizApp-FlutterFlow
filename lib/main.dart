@@ -21,6 +21,7 @@ void main() async {
   await FlutterFlowTheme.initialize();
 
   final appState = FFAppState(); // Initialize FFAppState
+  await appState.initializePersistedState();
 
   runApp(ChangeNotifierProvider(
     create: (context) => appState,

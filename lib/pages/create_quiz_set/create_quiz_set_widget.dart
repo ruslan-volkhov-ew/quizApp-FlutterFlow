@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -33,9 +34,9 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
     super.initState();
     _model = createModel(context, () => CreateQuizSetModel());
 
-    _model.textController1 ??= TextEditingController();
-    _model.textController2 ??= TextEditingController();
-    _model.textController3 ??= TextEditingController();
+    _model.titleTextFieldController ??= TextEditingController();
+    _model.descriptionTextFieldController ??= TextEditingController();
+    _model.durationTextFieldController ??= TextEditingController();
   }
 
   @override
@@ -302,7 +303,26 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
                         child: TextFormField(
-                          controller: _model.textController1,
+                          controller: _model.titleTextFieldController,
+                          onChanged: (_) => EasyDebounce.debounce(
+                            '_model.titleTextFieldController',
+                            Duration(milliseconds: 2000),
+                            () async {
+                              if (_model.titleTextFieldController.text !=
+                                      null &&
+                                  _model.titleTextFieldController.text != '') {
+                                if (!_model.isTitleNotEmpty) {
+                                  setState(() {
+                                    _model.isTitleNotEmpty = true;
+                                  });
+                                }
+                              } else {
+                                setState(() {
+                                  _model.isTitleNotEmpty = false;
+                                });
+                              }
+                            },
+                          ),
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -358,7 +378,7 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                     fontFamily: 'Poppins',
                                     color: Colors.white,
                                   ),
-                          validator: _model.textController1Validator
+                          validator: _model.titleTextFieldControllerValidator
                               .asValidator(context),
                         ),
                       ),
@@ -366,7 +386,7 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
                         child: TextFormField(
-                          controller: _model.textController2,
+                          controller: _model.descriptionTextFieldController,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -422,16 +442,52 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                     fontFamily: 'Poppins',
                                     color: Colors.white,
                                   ),
-                          validator: _model.textController2Validator
+                          validator: _model
+                              .descriptionTextFieldControllerValidator
                               .asValidator(context),
                         ),
                       ),
                       TextFormField(
-                        controller: _model.textController3,
+                        controller: _model.durationTextFieldController,
+                        onChanged: (_) => EasyDebounce.debounce(
+                          '_model.durationTextFieldController',
+                          Duration(milliseconds: 2000),
+                          () async {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  _model.durationTextFieldController.text,
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                                ),
+                                duration: Duration(milliseconds: 4000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).secondary,
+                              ),
+                            );
+                          },
+                        ),
+                        onFieldSubmitted: (_) async {
+                          if (_model.durationTextFieldController.text != null &&
+                              _model.durationTextFieldController.text != '') {
+                            if (!_model.isDurationNotEmpty) {
+                              setState(() {
+                                _model.isDurationNotEmpty = true;
+                              });
+                            }
+                          } else {
+                            setState(() {
+                              _model.isDurationNotEmpty = false;
+                            });
+                          }
+                        },
                         autofocus: true,
                         obscureText: false,
                         decoration: InputDecoration(
-                          hintText: 'Duration',
+                          hintText: 'Duration (in minutes)',
                           hintStyle:
                               FlutterFlowTheme.of(context).bodySmall.override(
                                     fontFamily: 'Poppins',
@@ -483,63 +539,105 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                               color: Colors.white,
                             ),
                         keyboardType: TextInputType.number,
-                        validator: _model.textController3Validator
+                        validator: _model.durationTextFieldControllerValidator
                             .asValidator(context),
                       ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            final quizSetCreateData = createQuizSetRecordData(
-                              quizName: _model.textController1.text,
-                              duration:
-                                  int.tryParse(_model.textController3.text),
-                              totalQuestions: 0,
-                              description: _model.textController2.text,
-                              coverPhoto: _model.uploadedFileUrl,
-                            );
-                            await QuizSetRecord.collection
-                                .doc()
-                                .set(quizSetCreateData);
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Successful!',
-                                  style: TextStyle(
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 12.0, 0.0, 0.0),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              final quizSetCreateData = createQuizSetRecordData(
+                                quizName: _model.titleTextFieldController.text,
+                                duration: int.tryParse(
+                                    _model.durationTextFieldController.text),
+                                totalQuestions: 0,
+                                description:
+                                    _model.descriptionTextFieldController.text,
+                                coverPhoto: _model.uploadedFileUrl,
+                              );
+                              await QuizSetRecord.collection
+                                  .doc()
+                                  .set(quizSetCreateData);
+                              ScaffoldMessenger.of(context).clearSnackBars();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Successful!',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  duration: Duration(milliseconds: 4000),
+                                  backgroundColor: Color(0x33000000),
+                                ),
+                              );
+                            },
+                            text: 'Create Set',
+                            options: FFButtonOptions(
+                              width: double.infinity,
+                              height: 60.0,
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color: FlutterFlowTheme.of(context).primary,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .override(
+                                    fontFamily: 'Poppins',
                                     color: Colors.white,
                                   ),
-                                ),
-                                duration: Duration(milliseconds: 4000),
-                                backgroundColor: Color(0x33000000),
+                              elevation: 0.0,
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
                               ),
-                            );
-                          },
-                          text: 'Create Set',
-                          options: FFButtonOptions(
-                            width: double.infinity,
-                            height: 60.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                ),
-                            elevation: 0.0,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
                       ),
+                      if (!(_model.isTitleNotEmpty &&
+                          _model.isDurationNotEmpty))
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 12.0, 0.0, 0.0),
+                          child: FFButtonWidget(
+                            onPressed: () {
+                              print('Button pressed ...');
+                            },
+                            text: 'Create Set',
+                            options: FFButtonOptions(
+                              width: double.infinity,
+                              height: 60.0,
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color:
+                                  _model.durationTextFieldController.text != ''
+                                      ? Colors.white
+                                      : Color(0x34FFFFFF),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0x32FFFFFF),
+                                  ),
+                              elevation: 0.0,
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -550,7 +648,7 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        'Created Sets',
+                        'My Created Sets',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Poppins',
                               color: Colors.white,
@@ -615,8 +713,7 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                 totalQuestions:
                                     listViewQuizSetRecord.totalQuestions!,
                                 quizDuration:
-                                    listViewQuizSetRecord.duration!.toDouble() /
-                                        60000,
+                                    listViewQuizSetRecord.duration!.toDouble(),
                                 coverImage: listViewQuizSetRecord.coverPhoto!,
                               ),
                             ),

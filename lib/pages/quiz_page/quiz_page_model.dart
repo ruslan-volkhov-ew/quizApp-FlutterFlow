@@ -20,6 +20,8 @@ class QuizPageModel extends FlutterFlowModel {
 
   int pageNavigate = 0;
 
+  bool isButtonsActive = true;
+
   ///  State fields for stateful widgets in this page.
 
   InstantTimer? instantTimer;

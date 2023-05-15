@@ -102,68 +102,28 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
               children: [
                 Padding(
                   padding:
-                      EdgeInsetsDirectional.fromSTEB(20.0, 48.0, 20.0, 0.0),
+                      EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              height: 36.0,
-                              decoration: BoxDecoration(
-                                color: Color(0x00FFFFFF),
-                                borderRadius: BorderRadius.circular(24.0),
-                                border: Border.all(
-                                  color: Colors.white,
-                                ),
+                            FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 30.0,
+                              borderWidth: 1.0,
+                              buttonSize: 60.0,
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                                size: 30.0,
                               ),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 0.0, 12.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Icon(
-                                      Icons.access_time,
-                                      color: Colors.white,
-                                      size: 24.0,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          6.0, 0.0, 0.0, 0.0),
-                                      child: FlutterFlowTimer(
-                                        initialTime: widget.quizDuration!,
-                                        getDisplayTime: (value) =>
-                                            StopWatchTimer.getDisplayTime(
-                                          value,
-                                          hours: false,
-                                          milliSecond: false,
-                                        ),
-                                        timer: _model.timerController,
-                                        updateStateInterval:
-                                            Duration(milliseconds: 1000),
-                                        onChanged:
-                                            (value, displayTime, shouldUpdate) {
-                                          _model.timerMilliseconds = value;
-                                          _model.timerValue = displayTime;
-                                          if (shouldUpdate) setState(() {});
-                                        },
-                                        textAlign: TextAlign.start,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              onPressed: () async {
+                                context.safePop();
+                              },
                             ),
                           ],
                         ),
@@ -195,10 +155,78 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Icon(
-                              Icons.grid_view,
-                              color: Colors.white,
-                              size: 24.0,
+                            Container(
+                              height: 36.0,
+                              decoration: BoxDecoration(
+                                color: Color(0x00FFFFFF),
+                                borderRadius: BorderRadius.circular(24.0),
+                                border: Border.all(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    12.0, 0.0, 12.0, 0.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Icon(
+                                      Icons.access_time,
+                                      color: Colors.white,
+                                      size: 24.0,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          6.0, 0.0, 0.0, 0.0),
+                                      child: FlutterFlowTimer(
+                                        initialTime:
+                                            widget.quizDuration! * 1000 * 60,
+                                        getDisplayTime: (value) =>
+                                            StopWatchTimer.getDisplayTime(
+                                          value,
+                                          hours: false,
+                                          milliSecond: false,
+                                        ),
+                                        timer: _model.timerController,
+                                        updateStateInterval:
+                                            Duration(milliseconds: 1000),
+                                        onChanged:
+                                            (value, displayTime, shouldUpdate) {
+                                          _model.timerMilliseconds = value;
+                                          _model.timerValue = displayTime;
+                                          if (shouldUpdate) setState(() {});
+                                        },
+                                        onEnded: () async {
+                                          context.goNamed(
+                                            'ScorePage',
+                                            queryParams: {
+                                              'scoreAchieved': serializeParam(
+                                                FFAppState().score,
+                                                ParamType.int,
+                                              ),
+                                              'totalQuestions': serializeParam(
+                                                quizPageCount,
+                                                ParamType.int,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+
+                                          FFAppState().update(() {
+                                            FFAppState().completedQuestions = 0;
+                                          });
+                                        },
+                                        textAlign: TextAlign.start,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.white,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -261,6 +289,8 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 0.0, 50.0),
                                     child: PageView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       controller: _model.pageViewController ??=
                                           PageController(
                                               initialPage: min(
@@ -360,6 +390,14 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           isTrue:
                                                               quizOptionQuestionARecord!
                                                                   .isTrue!,
+                                                          isActive: _model
+                                                              .isButtonsActive,
+                                                          onTap: () async {
+                                                            setState(() {
+                                                              _model.isButtonsActive =
+                                                                  false;
+                                                            });
+                                                          },
                                                         );
                                                       },
                                                     ),
@@ -419,6 +457,14 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           isTrue:
                                                               quizOptionQuestionBRecord!
                                                                   .isTrue!,
+                                                          isActive: _model
+                                                              .isButtonsActive,
+                                                          onTap: () async {
+                                                            setState(() {
+                                                              _model.isButtonsActive =
+                                                                  false;
+                                                            });
+                                                          },
                                                         );
                                                       },
                                                     ),
@@ -478,6 +524,14 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           isTrue:
                                                               quizOptionQuestionCRecord!
                                                                   .isTrue!,
+                                                          isActive: _model
+                                                              .isButtonsActive,
+                                                          onTap: () async {
+                                                            setState(() {
+                                                              _model.isButtonsActive =
+                                                                  false;
+                                                            });
+                                                          },
                                                         );
                                                       },
                                                     ),
@@ -537,6 +591,14 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           isTrue:
                                                               quizOptionQuestionDRecord!
                                                                   .isTrue!,
+                                                          isActive: _model
+                                                              .isButtonsActive,
+                                                          onTap: () async {
+                                                            setState(() {
+                                                              _model.isButtonsActive =
+                                                                  false;
+                                                            });
+                                                          },
                                                         );
                                                       },
                                                     ),
@@ -559,33 +621,45 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                if (FFAppState().completedQuestions > 0)
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 16.0, 0.0),
-                                    child: FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 12.0,
-                                      borderWidth: 1.0,
-                                      buttonSize: 60.0,
-                                      fillColor:
-                                          FlutterFlowTheme.of(context).primary,
-                                      icon: Icon(
-                                        Icons.keyboard_arrow_left,
-                                        color: Colors.white,
-                                        size: 30.0,
+                                if (true == false)
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    child: Visibility(
+                                      visible:
+                                          FFAppState().completedQuestions > 0,
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 16.0, 0.0),
+                                        child: FlutterFlowIconButton(
+                                          borderColor: Colors.transparent,
+                                          borderRadius: 12.0,
+                                          borderWidth: 1.0,
+                                          buttonSize: 60.0,
+                                          fillColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_left,
+                                            color: Colors.white,
+                                            size: 30.0,
+                                          ),
+                                          onPressed: () async {
+                                            await _model.pageViewController
+                                                ?.previousPage(
+                                              duration:
+                                                  Duration(milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                            setState(() {
+                                              _model.pageNavigate =
+                                                  _model.pageNavigate + -1;
+                                              _model.isButtonsActive = true;
+                                            });
+                                          },
+                                        ),
                                       ),
-                                      onPressed: () async {
-                                        await _model.pageViewController
-                                            ?.previousPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.ease,
-                                        );
-                                        setState(() {
-                                          _model.pageNavigate =
-                                              _model.pageNavigate + -1;
-                                        });
-                                      },
                                     ),
                                   ),
                                 if ((FFAppState().completedQuestions >= 0) &&
@@ -610,6 +684,9 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                   _model.pageNavigate + 1;
                                             });
                                           }
+                                          setState(() {
+                                            _model.isButtonsActive = true;
+                                          });
                                         },
                                         text: 'Next',
                                         options: FFButtonOptions(
