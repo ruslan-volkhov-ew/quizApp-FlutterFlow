@@ -417,7 +417,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: Color(0x00000000),
+                                                color: Colors.white,
                                                 width: 1.0,
                                               ),
                                               borderRadius:
@@ -486,7 +486,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: Color(0x00000000),
+                                                color: Colors.white,
                                                 width: 1.0,
                                               ),
                                               borderRadius:

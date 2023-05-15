@@ -117,6 +117,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'Authentication',
           path: '/authentication',
           builder: (context, params) => AuthenticationWidget(),
+        ),
+        FFRoute(
+          name: 'LogOut',
+          path: '/logOut',
+          builder: (context, params) => LogOutWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       urlPathStrategy: UrlPathStrategy.path,

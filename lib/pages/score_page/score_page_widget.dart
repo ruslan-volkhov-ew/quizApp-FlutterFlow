@@ -182,36 +182,46 @@ class _ScorePageWidgetState extends State<ScorePageWidget>
                         ),
                   ).animateOnPageLoad(
                       animationsMap['textOnPageLoadAnimation']!),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'You have got ',
-                            style: TextStyle(),
-                          ),
-                          TextSpan(
-                            text: valueOrDefault<String>(
-                              (widget.scoreAchieved! * 50).toString(),
-                              '0',
+                  if (widget.scoreAchieved != 0)
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'You have got ',
+                              style: TextStyle(),
                             ),
-                            style: TextStyle(),
-                          ),
-                          TextSpan(
-                            text: ' points.',
-                            style: TextStyle(),
-                          )
-                        ],
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Poppins',
-                              color: Colors.white,
+                            TextSpan(
+                              text: valueOrDefault<String>(
+                                (widget.scoreAchieved! * 50).toString(),
+                                '0',
+                              ),
+                              style: TextStyle(),
                             ),
-                      ),
-                    ).animateOnPageLoad(
-                        animationsMap['richTextOnPageLoadAnimation']!),
-                  ),
+                            TextSpan(
+                              text: ' points.',
+                              style: TextStyle(),
+                            )
+                          ],
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                  ),
+                        ),
+                      ).animateOnPageLoad(
+                          animationsMap['richTextOnPageLoadAnimation']!),
+                    ),
+                  if (widget.scoreAchieved == 0)
+                    Text(
+                      'You have complited this quiz',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
+                    ),
                 ],
               ),
               Padding(
