@@ -11,6 +11,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'create_quiz_set_model.dart';
@@ -306,23 +307,23 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                           controller: _model.titleTextFieldController,
                           onChanged: (_) => EasyDebounce.debounce(
                             '_model.titleTextFieldController',
-                            Duration(milliseconds: 2000),
-                            () async {
-                              if (_model.titleTextFieldController.text !=
-                                      null &&
-                                  _model.titleTextFieldController.text != '') {
-                                if (!_model.isTitleNotEmpty) {
-                                  setState(() {
-                                    _model.isTitleNotEmpty = true;
-                                  });
-                                }
-                              } else {
+                            Duration(milliseconds: 100),
+                            () => setState(() {}),
+                          ),
+                          onFieldSubmitted: (_) async {
+                            if (_model.titleTextFieldController.text != null &&
+                                _model.titleTextFieldController.text != '') {
+                              if (!_model.isTitleNotEmpty) {
                                 setState(() {
-                                  _model.isTitleNotEmpty = false;
+                                  _model.isTitleNotEmpty = true;
                                 });
                               }
-                            },
-                          ),
+                            } else {
+                              setState(() {
+                                _model.isTitleNotEmpty = false;
+                              });
+                            }
+                          },
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
@@ -451,39 +452,9 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                         controller: _model.durationTextFieldController,
                         onChanged: (_) => EasyDebounce.debounce(
                           '_model.durationTextFieldController',
-                          Duration(milliseconds: 2000),
-                          () async {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  _model.durationTextFieldController.text,
-                                  style: TextStyle(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                  ),
-                                ),
-                                duration: Duration(milliseconds: 4000),
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).secondary,
-                              ),
-                            );
-                          },
+                          Duration(milliseconds: 100),
+                          () => setState(() {}),
                         ),
-                        onFieldSubmitted: (_) async {
-                          if (_model.durationTextFieldController.text != null &&
-                              _model.durationTextFieldController.text != '') {
-                            if (!_model.isDurationNotEmpty) {
-                              setState(() {
-                                _model.isDurationNotEmpty = true;
-                              });
-                            }
-                          } else {
-                            setState(() {
-                              _model.isDurationNotEmpty = false;
-                            });
-                          }
-                        },
                         autofocus: true,
                         obscureText: false,
                         decoration: InputDecoration(
@@ -541,69 +512,88 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                         keyboardType: TextInputType.number,
                         validator: _model.durationTextFieldControllerValidator
                             .asValidator(context),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                        ],
                       ),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                         ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 12.0, 0.0, 0.0),
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              final quizSetCreateData = createQuizSetRecordData(
-                                quizName: _model.titleTextFieldController.text,
-                                duration: int.tryParse(
-                                    _model.durationTextFieldController.text),
-                                totalQuestions: 0,
-                                description:
-                                    _model.descriptionTextFieldController.text,
-                                coverPhoto: _model.uploadedFileUrl,
-                              );
-                              await QuizSetRecord.collection
-                                  .doc()
-                                  .set(quizSetCreateData);
-                              ScaffoldMessenger.of(context).clearSnackBars();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Successful!',
-                                    style: TextStyle(
+                        child: Visibility(
+                          visible: (_model.durationTextFieldController.text !=
+                                      '') &&
+                                  (_model.titleTextFieldController.text !=
+                                          null &&
+                                      _model.titleTextFieldController.text !=
+                                          '')
+                              ? true
+                              : false,
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 12.0, 0.0, 0.0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                final quizSetCreateData =
+                                    createQuizSetRecordData(
+                                  quizName:
+                                      _model.titleTextFieldController.text,
+                                  duration: int.tryParse(
+                                      _model.durationTextFieldController.text),
+                                  totalQuestions: 0,
+                                  description: _model
+                                      .descriptionTextFieldController.text,
+                                  coverPhoto: _model.uploadedFileUrl,
+                                  userId: currentUserUid,
+                                );
+                                await QuizSetRecord.collection
+                                    .doc()
+                                    .set(quizSetCreateData);
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Successful!',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor: Color(0x33000000),
+                                  ),
+                                );
+                              },
+                              text: 'Create Set',
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height: 60.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Poppins',
                                       color: Colors.white,
                                     ),
-                                  ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor: Color(0x33000000),
+                                elevation: 0.0,
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
                                 ),
-                              );
-                            },
-                            text: 'Create Set',
-                            options: FFButtonOptions(
-                              width: double.infinity,
-                              height: 60.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).primary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
-                              elevation: 0.0,
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 1.0,
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                              borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
                         ),
                       ),
-                      if (!(_model.isTitleNotEmpty &&
-                          _model.isDurationNotEmpty))
+                      if (!((_model.durationTextFieldController.text != '') &&
+                              (_model.titleTextFieldController.text != null &&
+                                  _model.titleTextFieldController.text != '')
+                          ? true
+                          : false))
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 12.0, 0.0, 0.0),
@@ -619,10 +609,7 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                   0.0, 0.0, 0.0, 0.0),
                               iconPadding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
-                              color:
-                                  _model.durationTextFieldController.text != ''
-                                      ? Colors.white
-                                      : Color(0x34FFFFFF),
+                              color: Color(0x344B39EF),
                               textStyle: FlutterFlowTheme.of(context)
                                   .titleSmall
                                   .override(
@@ -661,7 +648,10 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                   padding:
                       EdgeInsetsDirectional.fromSTEB(20.0, 12.0, 20.0, 0.0),
                   child: StreamBuilder<List<QuizSetRecord>>(
-                    stream: queryQuizSetRecord(),
+                    stream: queryQuizSetRecord(
+                      queryBuilder: (quizSetRecord) => quizSetRecord
+                          .where('user_id', isEqualTo: currentUserUid),
+                    ),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
                       if (!snapshot.hasData) {
@@ -715,6 +705,19 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                 quizDuration:
                                     listViewQuizSetRecord.duration!.toDouble(),
                                 coverImage: listViewQuizSetRecord.coverPhoto!,
+                                canEdit:
+                                    (listViewQuizSetRecord.userId != null &&
+                                                listViewQuizSetRecord.userId !=
+                                                    '') &&
+                                            (listViewQuizSetRecord.userId ==
+                                                currentUserUid)
+                                        ? true
+                                        : false,
+                                quizIds: listViewQuizSetRecord.reference.id,
+                                onDelete: () async {
+                                  await listViewQuizSetRecord.reference
+                                      .delete();
+                                },
                               ),
                             ),
                           );

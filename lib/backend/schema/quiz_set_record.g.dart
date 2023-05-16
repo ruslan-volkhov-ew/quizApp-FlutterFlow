@@ -53,6 +53,13 @@ class _$QuizSetRecordSerializer implements StructuredSerializer<QuizSetRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.userId;
+    if (value != null) {
+      result
+        ..add('user_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -96,6 +103,10 @@ class _$QuizSetRecordSerializer implements StructuredSerializer<QuizSetRecord> {
           result.coverPhoto = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'user_id':
+          result.userId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -121,6 +132,8 @@ class _$QuizSetRecord extends QuizSetRecord {
   @override
   final String? coverPhoto;
   @override
+  final String? userId;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$QuizSetRecord([void Function(QuizSetRecordBuilder)? updates]) =>
@@ -132,6 +145,7 @@ class _$QuizSetRecord extends QuizSetRecord {
       this.totalQuestions,
       this.description,
       this.coverPhoto,
+      this.userId,
       this.ffRef})
       : super._();
 
@@ -151,6 +165,7 @@ class _$QuizSetRecord extends QuizSetRecord {
         totalQuestions == other.totalQuestions &&
         description == other.description &&
         coverPhoto == other.coverPhoto &&
+        userId == other.userId &&
         ffRef == other.ffRef;
   }
 
@@ -162,6 +177,7 @@ class _$QuizSetRecord extends QuizSetRecord {
     _$hash = $jc(_$hash, totalQuestions.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
     _$hash = $jc(_$hash, coverPhoto.hashCode);
+    _$hash = $jc(_$hash, userId.hashCode);
     _$hash = $jc(_$hash, ffRef.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -175,6 +191,7 @@ class _$QuizSetRecord extends QuizSetRecord {
           ..add('totalQuestions', totalQuestions)
           ..add('description', description)
           ..add('coverPhoto', coverPhoto)
+          ..add('userId', userId)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -205,6 +222,10 @@ class QuizSetRecordBuilder
   String? get coverPhoto => _$this._coverPhoto;
   set coverPhoto(String? coverPhoto) => _$this._coverPhoto = coverPhoto;
 
+  String? _userId;
+  String? get userId => _$this._userId;
+  set userId(String? userId) => _$this._userId = userId;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -221,6 +242,7 @@ class QuizSetRecordBuilder
       _totalQuestions = $v.totalQuestions;
       _description = $v.description;
       _coverPhoto = $v.coverPhoto;
+      _userId = $v.userId;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -249,6 +271,7 @@ class QuizSetRecordBuilder
             totalQuestions: totalQuestions,
             description: description,
             coverPhoto: coverPhoto,
+            userId: userId,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

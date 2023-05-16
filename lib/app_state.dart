@@ -12,12 +12,17 @@ class FFAppState extends ChangeNotifier {
 
   FFAppState._internal();
 
-  Future initializePersistedState() async {}
+  Future initializePersistedState() async {
+    prefs = await SharedPreferences.getInstance();
+    _userId = prefs.getString('ff_userId') ?? _userId;
+  }
 
   void update(VoidCallback callback) {
     callback();
     notifyListeners();
   }
+
+  late SharedPreferences prefs;
 
   int _completedQuestions = 0;
   int get completedQuestions => _completedQuestions;
@@ -29,6 +34,13 @@ class FFAppState extends ChangeNotifier {
   int get score => _score;
   set score(int _value) {
     _score = _value;
+  }
+
+  String _userId = '';
+  String get userId => _userId;
+  set userId(String _value) {
+    _userId = _value;
+    prefs.setString('ff_userId', _value);
   }
 }
 

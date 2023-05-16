@@ -4,21 +4,21 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'quiz_sets_model.dart';
-export 'quiz_sets_model.dart';
+import 'all_quiz_banner_model.dart';
+export 'all_quiz_banner_model.dart';
 
-class QuizSetsWidget extends StatefulWidget {
-  const QuizSetsWidget({
+class AllQuizBannerWidget extends StatefulWidget {
+  const AllQuizBannerWidget({
     Key? key,
     required this.title,
     required this.description,
     required this.totalQuestions,
     required this.quizDuration,
     required this.coverImage,
-    bool? canEdit,
+    bool? canDelete,
     required this.quizIds,
     required this.onDelete,
-  })  : this.canEdit = canEdit ?? false,
+  })  : this.canDelete = canDelete ?? false,
         super(key: key);
 
   final String? title;
@@ -26,16 +26,16 @@ class QuizSetsWidget extends StatefulWidget {
   final int? totalQuestions;
   final double? quizDuration;
   final String? coverImage;
-  final bool canEdit;
+  final bool canDelete;
   final String? quizIds;
   final Future<dynamic> Function()? onDelete;
 
   @override
-  _QuizSetsWidgetState createState() => _QuizSetsWidgetState();
+  _AllQuizBannerWidgetState createState() => _AllQuizBannerWidgetState();
 }
 
-class _QuizSetsWidgetState extends State<QuizSetsWidget> {
-  late QuizSetsModel _model;
+class _AllQuizBannerWidgetState extends State<AllQuizBannerWidget> {
+  late AllQuizBannerModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -46,7 +46,7 @@ class _QuizSetsWidgetState extends State<QuizSetsWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => QuizSetsModel());
+    _model = createModel(context, () => AllQuizBannerModel());
   }
 
   @override
@@ -242,14 +242,16 @@ class _QuizSetsWidgetState extends State<QuizSetsWidget> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (widget.canEdit == true)
+              if (widget.canDelete == true)
                 InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
-                    await widget.onDelete?.call();
+                    if (widget.canDelete) {
+                      await widget.onDelete?.call();
+                    }
                   },
                   child: Container(
                     width: 62.0,
@@ -290,7 +292,7 @@ class _QuizSetsWidgetState extends State<QuizSetsWidget> {
                 ),
                 alignment: AlignmentDirectional(0.0, 0.0),
                 child: Icon(
-                  Icons.add,
+                  Icons.play_arrow_rounded,
                   color: Colors.white,
                   size: 24.0,
                 ),
