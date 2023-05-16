@@ -8,3 +8,4 @@ export '/pages/add_quiz/add_quiz_widget.dart' show AddQuizWidget;
 export '/pages/authentication/authentication_widget.dart'
     show AuthenticationWidget;
 export '/pages/log_out/log_out_widget.dart' show LogOutWidget;
+export '/pages/show_all_quiz/show_all_quiz_widget.dart' show ShowAllQuizWidget;

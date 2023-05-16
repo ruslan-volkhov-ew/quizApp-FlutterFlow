@@ -1,5 +1,6 @@
 import '/backend/backend.dart';
 import '/components/quiz_option_widget.dart';
+import '/components/transparent_loader_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -37,14 +38,20 @@ class QuizPageModel extends FlutterFlowModel {
 
   // State field(s) for PageView widget.
   PageController? pageViewController;
+  // Model for TransparentLoader component.
+  late TransparentLoaderModel transparentLoaderModel;
 
   /// Initialization and disposal methods.
 
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    transparentLoaderModel =
+        createModel(context, () => TransparentLoaderModel());
+  }
 
   void dispose() {
     instantTimer?.cancel();
     timerController.dispose();
+    transparentLoaderModel.dispose();
   }
 
   /// Additional helper methods are added here.

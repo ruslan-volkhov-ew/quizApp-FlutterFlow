@@ -1,5 +1,6 @@
 import '/backend/backend.dart';
 import '/components/quiz_option_widget.dart';
+import '/components/transparent_loader_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -354,16 +355,8 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                         // Customize what your widget looks like when it's loading.
                                                         if (!snapshot.hasData) {
                                                           return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                              ),
-                                                            ),
+                                                            child:
+                                                                TransparentLoaderWidget(),
                                                           );
                                                         }
                                                         List<QuestionARecord>
@@ -421,16 +414,8 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                         // Customize what your widget looks like when it's loading.
                                                         if (!snapshot.hasData) {
                                                           return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                              ),
-                                                            ),
+                                                            child:
+                                                                TransparentLoaderWidget(),
                                                           );
                                                         }
                                                         List<QuestionBRecord>
@@ -488,16 +473,8 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                         // Customize what your widget looks like when it's loading.
                                                         if (!snapshot.hasData) {
                                                           return Center(
-                                                            child: SizedBox(
-                                                              width: 50.0,
-                                                              height: 50.0,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                              ),
-                                                            ),
+                                                            child:
+                                                                TransparentLoaderWidget(),
                                                           );
                                                         }
                                                         List<QuestionCRecord>
@@ -769,6 +746,11 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                       ),
                                     ),
                                   ),
+                                wrapWithModel(
+                                  model: _model.transparentLoaderModel,
+                                  updateCallback: () => setState(() {}),
+                                  child: TransparentLoaderWidget(),
+                                ),
                               ],
                             ),
                           ),
