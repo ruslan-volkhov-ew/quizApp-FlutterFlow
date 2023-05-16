@@ -289,6 +289,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  easy_debounce:
+    dependency: "direct main"
+    description:
+      name: easy_debounce
+      sha256: "476ea3a9062023be76d9d3f48188af75137ad0b57bc250a0fb7adcc471923f51"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -509,14 +517,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.3"
+  google_identity_services_web:
+    dependency: transitive
+    description:
+      name: google_identity_services_web
+      sha256: "7940fdc3b1035db4d65d387c1bdd6f9574deaa6777411569c05ecc25672efacd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   google_sign_in:
     dependency: "direct main"
     description:
       name: google_sign_in
-      sha256: a8a411a395935e0cef56172298dfeaa7f3556babc56912d98a3b761106a470c2
+      sha256: "750d08ffb4cd469f13068d15844ffd1d60c7ac1ca3c815918ba4ce4af22a2ddb"
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.0"
+    version: "6.0.2"
   google_sign_in_android:
     dependency: "direct main"
     description:
@@ -529,26 +545,26 @@ packages:
     dependency: "direct main"
     description:
       name: google_sign_in_ios
-      sha256: "8b80074ccda41b62553010b311506f5022f7d2701e4f22765546b3125450f9f3"
+      sha256: "2e1df687b17f7fddcaf9a0c7f994d0d19b5d41e8ce1d943013befd0a0ae67403"
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.0"
+    version: "5.6.1"
   google_sign_in_platform_interface:
     dependency: "direct main"
     description:
       name: google_sign_in_platform_interface
-      sha256: "252d0fadcd1e7939f1e00602eca1020b585d448aaa4b87c33137ca8717cd9e87"
+      sha256: "95a9e0a8701b5485f2ca330fd1fc6f918f5ce088042ce1019c5e389d8574ae4c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.4.0"
   google_sign_in_web:
     dependency: "direct main"
     description:
       name: google_sign_in_web
-      sha256: "5b35c221169a7b3e0fc15043ac09102ef542300ef92f2e1f05d5d8efde263af5"
+      sha256: "9f883b9b525297663510dfbbe8b04d39715aa0abba430851f501b7d1e4b0f465"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.2"
+    version: "0.11.0+2"
   graphs:
     dependency: transitive
     description:
@@ -929,10 +945,10 @@ packages:
     dependency: "direct main"
     description:
       name: rxdart
-      sha256: "5d22055fd443806c03ef24a02000637cf51eae49c2a0168d38a43fc166b0209c"
+      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.27.5"
+    version: "0.27.7"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1017,10 +1033,10 @@ packages:
     dependency: "direct main"
     description:
       name: sign_in_with_apple
-      sha256: "425cf29f6c8730314d08d62a3193319b84f40940f1f6f0d9cea703aaf3205a03"
+      sha256: ac3b113767dfdd765078c507dad9d4d9fe96b669cc7bd88fc36fc15376fb3400
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.0"
+    version: "4.3.0"
   sign_in_with_apple_platform_interface:
     dependency: "direct main"
     description:
