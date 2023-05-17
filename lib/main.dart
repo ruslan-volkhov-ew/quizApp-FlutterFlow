@@ -33,7 +33,7 @@ void main() async {
         builder: ((context) => MyApp()),
         isToolbarVisible: false,
         data: DevicePreviewData(
-          deviceIdentifier: Devices.ios.iPhone13.toString(),
+          deviceIdentifier: Devices.ios.iPhoneSE.toString(),
           isFrameVisible: true,
         ),
       ),
@@ -84,6 +84,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // print(DevicePreview.selectedDevice(context));
     return MaterialApp.router(
       title: 'QuizApp',
       localizationsDelegates: [
