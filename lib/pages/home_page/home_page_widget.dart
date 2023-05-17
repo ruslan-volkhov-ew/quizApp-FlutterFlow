@@ -1,5 +1,6 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/quiz_sets_widget.dart';
+import '/components/quiz_sets_copy_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -114,56 +115,62 @@ class _HomePageWidgetState extends State<HomePageWidget>
           ),
         ).animateOnPageLoad(
             animationsMap['floatingActionButtonOnPageLoadAnimation']!),
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Quiz Feed',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontSize: 22.0,
+                ),
+          ),
+          actions: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      context.pushNamed('LogOut');
+                    },
+                    child: Container(
+                      width: 40.0,
+                      height: 50.0,
+                      decoration: BoxDecoration(
+                        color: Color(0x1AFFFFFF),
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(6.0, 6.0, 6.0, 6.0),
+                        child: Image.asset(
+                          'assets/images/user-avatar.png',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          centerTitle: true,
+          elevation: 2.0,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
-                      child: Container(
-                        width: 40.0,
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          color: Color(0x1AFFFFFF),
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                          size: 16.0,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
-                      child: Container(
-                        width: 40.0,
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          color: Color(0x1AFFFFFF),
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              6.0, 6.0, 6.0, 6.0),
-                          child: Image.asset(
-                            'assets/images/user-avatar.png',
-                            width: 100.0,
-                            height: 100.0,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 Padding(
                   padding:
                       EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
@@ -190,7 +197,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
-                              context.pushNamed('CreateQuizSet');
+                              context.pushNamed('ShowAllQuiz');
                             },
                             child: Text(
                               'Show all',
@@ -216,7 +223,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   padding:
                       EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
                   child: StreamBuilder<List<QuizSetRecord>>(
-                    stream: queryQuizSetRecord(),
+                    stream: queryQuizSetRecord(
+                      queryBuilder: (quizSetRecord) => quizSetRecord
+                          .where('user_id', isEqualTo: currentUserUid),
+                    ),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
                       if (!snapshot.hasData) {
@@ -264,19 +274,19 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   }.withoutNulls,
                                 );
 
-                                FFAppState().update(() {
+                                setState(() {
                                   FFAppState().score = 0;
                                 });
                               },
-                              child: QuizSetsWidget(
+                              child: QuizSetsCopyWidget(
                                 key: Key(
-                                    'Keybgf_${listViewIndex}_of_${listViewQuizSetRecordList.length}'),
+                                    'Keyh1j_${listViewIndex}_of_${listViewQuizSetRecordList.length}'),
                                 title: listViewQuizSetRecord.quizName!,
                                 description: listViewQuizSetRecord.description!,
                                 totalQuestions:
                                     listViewQuizSetRecord.totalQuestions!,
                                 quizDuration:
-                                    listViewQuizSetRecord.duration! / 60000,
+                                    listViewQuizSetRecord.duration!.toDouble(),
                                 coverImage: listViewQuizSetRecord.coverPhoto!,
                               ),
                             ),

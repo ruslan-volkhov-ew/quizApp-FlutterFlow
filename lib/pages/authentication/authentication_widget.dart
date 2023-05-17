@@ -400,6 +400,20 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                           decoration: InputDecoration(
                                             labelText: 'Email Address',
                                             hintText: 'Enter your email...',
+                                            helperStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodySmall
@@ -417,7 +431,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: Color(0x00000000),
+                                                color: Colors.white,
                                                 width: 1.0,
                                               ),
                                               borderRadius:
@@ -469,6 +483,20 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                           decoration: InputDecoration(
                                             labelText: 'Password',
                                             hintText: 'Enter your password...',
+                                            helperStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0x7FFFFFFF),
+                                                    ),
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodySmall
@@ -486,7 +514,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: Color(0x00000000),
+                                                color: Colors.white,
                                                 width: 1.0,
                                               ),
                                               borderRadius:

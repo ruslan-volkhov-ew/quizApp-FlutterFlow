@@ -12,11 +12,15 @@ class QuizOptionWidget extends StatefulWidget {
     required this.questionNum,
     required this.questionName,
     required this.isTrue,
+    required this.isActive,
+    required this.onTap,
   }) : super(key: key);
 
   final String? questionNum;
   final String? questionName;
   final bool? isTrue;
+  final bool? isActive;
+  final Future<dynamic> Function()? onTap;
 
   @override
   _QuizOptionWidgetState createState() => _QuizOptionWidgetState();
@@ -54,49 +58,52 @@ class _QuizOptionWidgetState extends State<QuizOptionWidget> {
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () async {
-        if (widget.isTrue!) {
-          if (_model.isAnswered != null) {
-            setState(() {
-              _model.isAnswered = null;
-            });
-            setState(() {
-              FFAppState().completedQuestions =
-                  FFAppState().completedQuestions + -1;
-            });
-            setState(() {
-              FFAppState().score = FFAppState().score + -1;
-            });
+        if (widget.isActive!) {
+          if (widget.isTrue!) {
+            if (_model.isAnswered != null) {
+              setState(() {
+                _model.isAnswered = null;
+              });
+              setState(() {
+                FFAppState().completedQuestions =
+                    FFAppState().completedQuestions + -1;
+              });
+              setState(() {
+                FFAppState().score = FFAppState().score + -1;
+              });
+            } else {
+              setState(() {
+                _model.isAnswered = true;
+              });
+              setState(() {
+                FFAppState().completedQuestions =
+                    FFAppState().completedQuestions + 1;
+              });
+              setState(() {
+                FFAppState().score = FFAppState().score + 1;
+              });
+            }
           } else {
-            setState(() {
-              _model.isAnswered = true;
-            });
-            setState(() {
-              FFAppState().completedQuestions =
-                  FFAppState().completedQuestions + 1;
-            });
-            setState(() {
-              FFAppState().score = FFAppState().score + 1;
-            });
-          }
-        } else {
-          if (_model.isAnswered != null) {
-            setState(() {
-              _model.isAnswered = null;
-            });
-            setState(() {
-              FFAppState().completedQuestions =
-                  FFAppState().completedQuestions + -1;
-            });
-          } else {
-            setState(() {
-              _model.isAnswered = false;
-            });
-            setState(() {
-              FFAppState().completedQuestions =
-                  FFAppState().completedQuestions + 1;
-            });
+            if (_model.isAnswered != null) {
+              setState(() {
+                _model.isAnswered = null;
+              });
+              setState(() {
+                FFAppState().completedQuestions =
+                    FFAppState().completedQuestions + -1;
+              });
+            } else {
+              setState(() {
+                _model.isAnswered = false;
+              });
+              setState(() {
+                FFAppState().completedQuestions =
+                    FFAppState().completedQuestions + 1;
+              });
+            }
           }
         }
+        await widget.onTap?.call();
       },
       child: Container(
         width: double.infinity,

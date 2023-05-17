@@ -19,14 +19,12 @@ class AnimationInfo {
   final bool applyInitialState;
   final bool loop;
   final bool reverse;
-  late Adapter adapter;
   late AnimationController controller;
 }
 
 void createAnimation(AnimationInfo animation, TickerProvider vsync) {
   final newController = AnimationController(vsync: vsync);
   animation.controller = newController;
-  animation.adapter = ValueAdapter(newController.value);
 }
 
 void setupAnimations(Iterable<AnimationInfo> animations, TickerProvider vsync) {
@@ -35,9 +33,6 @@ void setupAnimations(Iterable<AnimationInfo> animations, TickerProvider vsync) {
 
 extension AnimatedWidgetExtension on Widget {
   Widget animateOnPageLoad(AnimationInfo animationInfo) => Animate(
-      controller:
-          animationInfo.applyInitialState ? null : animationInfo.controller,
-      adapter: animationInfo.applyInitialState ? null : animationInfo.adapter,
       effects: animationInfo.effects,
       child: this,
       onPlay: (controller) => animationInfo.loop
@@ -54,7 +49,7 @@ extension AnimatedWidgetExtension on Widget {
       hasBeenTriggered || animationInfo.applyInitialState
           ? Animate(
               controller: animationInfo.controller,
-              adapter: animationInfo.adapter,
+              autoPlay: false,
               effects: animationInfo.effects,
               child: this)
           : this;

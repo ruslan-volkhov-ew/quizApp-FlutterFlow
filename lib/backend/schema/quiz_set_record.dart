@@ -23,6 +23,9 @@ abstract class QuizSetRecord
   @BuiltValueField(wireName: 'cover_photo')
   String? get coverPhoto;
 
+  @BuiltValueField(wireName: 'user_id')
+  String? get userId;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -32,7 +35,8 @@ abstract class QuizSetRecord
     ..duration = 0
     ..totalQuestions = 0
     ..description = ''
-    ..coverPhoto = '';
+    ..coverPhoto = ''
+    ..userId = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('quizSet');
@@ -61,6 +65,7 @@ Map<String, dynamic> createQuizSetRecordData({
   int? totalQuestions,
   String? description,
   String? coverPhoto,
+  String? userId,
 }) {
   final firestoreData = serializers.toFirestore(
     QuizSetRecord.serializer,
@@ -70,7 +75,8 @@ Map<String, dynamic> createQuizSetRecordData({
         ..duration = duration
         ..totalQuestions = totalQuestions
         ..description = description
-        ..coverPhoto = coverPhoto,
+        ..coverPhoto = coverPhoto
+        ..userId = userId,
     ),
   );
 
