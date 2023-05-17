@@ -277,18 +277,18 @@ packages:
     dependency: transitive
     description:
       name: device_frame
-      sha256: d5b4541a8755a36ac50b6605200e51db6d264438a38f327aec2ce31870e49885
+      sha256: f0628754a69c521baba1bd842840d118ea676d77786e0e0a03e4ff8453e2904d
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "0.5.2"
   device_preview:
     dependency: "direct main"
     description:
       name: device_preview
-      sha256: a9b78972be59eebb0b96599c2c15b82239ddd4cb7d8e7f177be6ca910a397955
+      sha256: "6f5ef1b895a7c1d01bd46e91b9b4696ee0f5617ac095cc4576505b704b6e1ae8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "0.8.0"
   easy_debounce:
     dependency: "direct main"
     description:
@@ -459,6 +459,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.9"
+  flutter_svg:
+    dependency: transitive
+    description:
+      name: flutter_svg
+      sha256: cbf529d563dd910a249041bde2a0dfc3cf62280fcc459b85f3d614b2ab73abb3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.23.0+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -481,10 +489,10 @@ packages:
     dependency: transitive
     description:
       name: freezed_annotation
-      sha256: "1be037f901137bf2b9a0c309e9bf2694d6ec77687645211218191ade4f41a4b8"
+      sha256: "02d17a242f724828a7c820921dbe92c66fe685d6bef3d7450dc556fa79e033ce"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "0.15.0"
   from_css_color:
     dependency: "direct main"
     description:
@@ -797,6 +805,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: "3bdd251dae9ffaef944450b73f168610db7e968e7b20daf0c3907f8b4aafc8a2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.1+1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      sha256: ee5c47c1058ad66b4a41746ec3996af9593d0858872807bcd64ac118f0700337
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   path_provider:
     dependency: "direct main"
     description:
@@ -913,10 +937,10 @@ packages:
     dependency: "direct main"
     description:
       name: provider
-      sha256: e1e7413d70444ea3096815a60fe5da1b11bda8a9dc4769252cc82c53536f8bcc
+      sha256: "59471e0a4595e264625d3496af567ac85bdae1148ec985aff1e0555786f53ecf"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.4"
+    version: "5.0.0"
   pub_semver:
     dependency: transitive
     description:
@@ -1346,6 +1370,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: "80d494c09849dc3f899d227a78c30c5b949b985ededf884cb3f3bcd39f4b447a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.1"
   yaml:
     dependency: transitive
     description:
