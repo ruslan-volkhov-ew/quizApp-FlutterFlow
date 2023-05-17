@@ -23,8 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
+  # flutter_localizations:
+  #   sdk: flutter
   auto_size_text: 3.0.0
   built_collection: 5.1.1
   built_value: 8.4.3
