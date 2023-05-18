@@ -83,6 +83,14 @@ class _QuizSetsCopyWidgetState extends State<QuizSetsCopyWidget> {
                       width: 100.0,
                       height: 100.0,
                       fit: BoxFit.contain,
+                      errorBuilder: (context, exception, stackTrace) {
+                        return Image.asset(
+                          'assets/images/no-image-icon-device.png',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.contain,
+                        );
+                      },
                     ),
                   ),
                 ),

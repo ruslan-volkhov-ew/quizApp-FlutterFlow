@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
@@ -74,16 +76,21 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
               context.pop();
             },
           ),
-          title: Text(
-            'Create Set',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
+          title: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(
+                0.0, kIsWeb ? 30.0 : 0, 0.0, 0.0),
+            child: Text(
+              'Create Set',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                    fontSize: 22.0,
+                  ),
+            ),
           ),
           actions: [],
           centerTitle: true,
+          toolbarHeight: kIsWeb ? 70.0 : null,
           elevation: 0.0,
         ),
         body: SafeArea(
