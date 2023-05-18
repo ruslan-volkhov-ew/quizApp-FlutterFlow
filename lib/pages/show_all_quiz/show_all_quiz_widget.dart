@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/all_quiz_banner_widget.dart';
@@ -63,16 +65,21 @@ class _ShowAllQuizWidgetState extends State<ShowAllQuizWidget> {
               context.pop();
             },
           ),
-          title: Text(
-            'All quiz',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
+          title: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(
+                0.0, kIsWeb ? 30.0 : 0, 0.0, 0.0),
+            child: Text(
+              'All quiz',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                    fontSize: 22.0,
+                  ),
+            ),
           ),
           actions: [],
           centerTitle: true,
+          toolbarHeight: kIsWeb ? 70.0 : null,
           elevation: 0.0,
         ),
         body: SafeArea(
