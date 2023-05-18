@@ -115,56 +115,64 @@ class _HomePageWidgetState extends State<HomePageWidget>
           ),
         ).animateOnPageLoad(
             animationsMap['floatingActionButtonOnPageLoadAnimation']!),
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Quiz Feed',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
-          ),
-          actions: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed('LogOut');
-                    },
-                    child: Container(
-                      width: 40.0,
-                      height: 50.0,
-                      decoration: BoxDecoration(
-                        color: Color(0x1AFFFFFF),
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      child: Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(6.0, 6.0, 6.0, 6.0),
-                        child: Image.asset(
-                          'assets/images/user-avatar.png',
-                          width: 100.0,
-                          height: 100.0,
-                          fit: BoxFit.cover,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+          child: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+            automaticallyImplyLeading: false,
+            title: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+              child: Text(
+                'Quiz Feed',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Poppins',
+                      color: Colors.white,
+                      fontSize: 22.0,
+                    ),
+              ),
+            ),
+            actions: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        context.pushNamed('LogOut');
+                      },
+                      child: Container(
+                        width: 40.0,
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          color: Color(0x1AFFFFFF),
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              6.0, 6.0, 6.0, 6.0),
+                          child: Image.asset(
+                            'assets/images/user-avatar.png',
+                            width: 100.0,
+                            height: 100.0,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
-          centerTitle: true,
-          elevation: 2.0,
+                ],
+              ),
+            ],
+            centerTitle: true,
+            toolbarHeight: 70.0,
+            elevation: 2.0,
+          ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
