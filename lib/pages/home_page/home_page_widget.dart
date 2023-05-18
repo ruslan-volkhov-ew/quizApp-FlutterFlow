@@ -118,13 +118,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
-          title: Text(
-            'Quiz Feed',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
+          title: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+            child: Text(
+              'Quiz Feed',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                    fontSize: 22.0,
+                  ),
+            ),
           ),
           actions: [
             Row(
@@ -164,6 +167,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
             ),
           ],
           centerTitle: true,
+          toolbarHeight: 70.0,
           elevation: 2.0,
         ),
         body: SafeArea(
