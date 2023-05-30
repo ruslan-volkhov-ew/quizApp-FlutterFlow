@@ -1,47 +1,63 @@
 import 'dart:async';
 
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
+
 import 'index.dart';
-import 'serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-part 'quiz_record.g.dart';
+class QuizRecord extends FirestoreRecord {
+  QuizRecord._(
+    DocumentReference reference,
+    Map<String, dynamic> data,
+  ) : super(reference, data) {
+    _initializeFields();
+  }
 
-abstract class QuizRecord implements Built<QuizRecord, QuizRecordBuilder> {
-  static Serializer<QuizRecord> get serializer => _$quizRecordSerializer;
+  // "id" field.
+  int? _id;
+  int get id => _id ?? 0;
+  bool hasId() => _id != null;
 
-  int? get id;
+  // "question" field.
+  String? _question;
+  String get question => _question ?? '';
+  bool hasQuestion() => _question != null;
 
-  String? get question;
+  // "quiz_set" field.
+  DocumentReference? _quizSet;
+  DocumentReference? get quizSet => _quizSet;
+  bool hasQuizSet() => _quizSet != null;
 
-  @BuiltValueField(wireName: 'quiz_set')
-  DocumentReference? get quizSet;
-
-  @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ffRef;
-  DocumentReference get reference => ffRef!;
-
-  static void _initializeBuilder(QuizRecordBuilder builder) => builder
-    ..id = 0
-    ..question = '';
+  void _initializeFields() {
+    _id = snapshotData['id'] as int?;
+    _question = snapshotData['question'] as String?;
+    _quizSet = snapshotData['quiz_set'] as DocumentReference?;
+  }
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('quiz');
 
-  static Stream<QuizRecord> getDocument(DocumentReference ref) => ref
-      .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Stream<QuizRecord> getDocument(DocumentReference ref) =>
+      ref.snapshots().map((s) => QuizRecord.fromSnapshot(s));
 
-  static Future<QuizRecord> getDocumentOnce(DocumentReference ref) => ref
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Future<QuizRecord> getDocumentOnce(DocumentReference ref) =>
+      ref.get().then((s) => QuizRecord.fromSnapshot(s));
 
-  QuizRecord._();
-  factory QuizRecord([void Function(QuizRecordBuilder) updates]) = _$QuizRecord;
+  static QuizRecord fromSnapshot(DocumentSnapshot snapshot) => QuizRecord._(
+        snapshot.reference,
+        mapFromFirestore(snapshot.data() as Map<String, dynamic>),
+      );
 
   static QuizRecord getDocumentFromData(
-          Map<String, dynamic> data, DocumentReference reference) =>
-      serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
+    Map<String, dynamic> data,
+    DocumentReference reference,
+  ) =>
+      QuizRecord._(reference, mapFromFirestore(data));
+
+  @override
+  String toString() =>
+      'QuizRecord(reference: ${reference.path}, data: $snapshotData)';
 }
 
 Map<String, dynamic> createQuizRecordData({
@@ -49,14 +65,12 @@ Map<String, dynamic> createQuizRecordData({
   String? question,
   DocumentReference? quizSet,
 }) {
-  final firestoreData = serializers.toFirestore(
-    QuizRecord.serializer,
-    QuizRecord(
-      (q) => q
-        ..id = id
-        ..question = question
-        ..quizSet = quizSet,
-    ),
+  final firestoreData = mapToFirestore(
+    <String, dynamic>{
+      'id': id,
+      'question': question,
+      'quiz_set': quizSet,
+    }.withoutNulls,
   );
 
   return firestoreData;

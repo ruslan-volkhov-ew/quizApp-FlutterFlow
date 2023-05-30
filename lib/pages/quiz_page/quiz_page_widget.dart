@@ -48,11 +48,15 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
     super.initState();
     _model = createModel(context, () => QuizPageModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'QuizPage'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('QUIZ_PAGE_PAGE_QuizPage_ON_INIT_STATE');
+      logFirebaseEvent('QuizPage_start_periodic_action');
       _model.instantTimer = InstantTimer.periodic(
         duration: Duration(milliseconds: 1000),
         callback: (timer) async {
+          logFirebaseEvent('QuizPage_timer');
           _model.timerController.onExecute.add(StopWatchExecute.start);
         },
         startImmediately: true,
@@ -123,6 +127,9 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                 size: 30.0,
                               ),
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'QUIZ_PAGE_PAGE_arrow_back_ICN_ON_TAP');
+                                logFirebaseEvent('IconButton_navigate_back');
                                 context.safePop();
                               },
                             ),
@@ -198,6 +205,10 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                           if (shouldUpdate) setState(() {});
                                         },
                                         onEnded: () async {
+                                          logFirebaseEvent(
+                                              'QUIZ_Timer_b9cuso8n_ON_TIMER_END');
+                                          logFirebaseEvent('Timer_navigate_to');
+
                                           context.goNamed(
                                             'ScorePage',
                                             queryParams: {
@@ -212,6 +223,8 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                             }.withoutNulls,
                                           );
 
+                                          logFirebaseEvent(
+                                              'Timer_update_app_state');
                                           FFAppState().update(() {
                                             FFAppState().completedQuestions = 0;
                                           });
@@ -313,7 +326,7 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                   .fromSTEB(
                                                       20.0, 24.0, 20.0, 0.0),
                                               child: Text(
-                                                pageViewQuizRecord.question!,
+                                                pageViewQuizRecord.question,
                                                 textAlign: TextAlign.start,
                                                 style:
                                                     FlutterFlowTheme.of(context)
@@ -379,13 +392,17 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           questionNum: 'A',
                                                           questionName:
                                                               quizOptionQuestionARecord!
-                                                                  .question!,
+                                                                  .question,
                                                           isTrue:
                                                               quizOptionQuestionARecord!
-                                                                  .isTrue!,
+                                                                  .isTrue,
                                                           isActive: _model
                                                               .isButtonsActive,
                                                           onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'QUIZ_Container_7ms0bqmx_CALLBACK');
+                                                            logFirebaseEvent(
+                                                                'QuizOption_update_widget_state');
                                                             setState(() {
                                                               _model.isButtonsActive =
                                                                   false;
@@ -438,13 +455,17 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           questionNum: 'B',
                                                           questionName:
                                                               quizOptionQuestionBRecord!
-                                                                  .question!,
+                                                                  .question,
                                                           isTrue:
                                                               quizOptionQuestionBRecord!
-                                                                  .isTrue!,
+                                                                  .isTrue,
                                                           isActive: _model
                                                               .isButtonsActive,
                                                           onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'QUIZ_Container_hno7610m_CALLBACK');
+                                                            logFirebaseEvent(
+                                                                'QuizOption_update_widget_state');
                                                             setState(() {
                                                               _model.isButtonsActive =
                                                                   false;
@@ -497,13 +518,17 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           questionNum: 'C',
                                                           questionName:
                                                               quizOptionQuestionCRecord!
-                                                                  .question!,
+                                                                  .question,
                                                           isTrue:
                                                               quizOptionQuestionCRecord!
-                                                                  .isTrue!,
+                                                                  .isTrue,
                                                           isActive: _model
                                                               .isButtonsActive,
                                                           onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'QUIZ_Container_uqvkp0de_CALLBACK');
+                                                            logFirebaseEvent(
+                                                                'QuizOption_update_widget_state');
                                                             setState(() {
                                                               _model.isButtonsActive =
                                                                   false;
@@ -564,13 +589,17 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                                           questionNum: 'D',
                                                           questionName:
                                                               quizOptionQuestionDRecord!
-                                                                  .question!,
+                                                                  .question,
                                                           isTrue:
                                                               quizOptionQuestionDRecord!
-                                                                  .isTrue!,
+                                                                  .isTrue,
                                                           isActive: _model
                                                               .isButtonsActive,
                                                           onTap: () async {
+                                                            logFirebaseEvent(
+                                                                'QUIZ_Container_qe6g7vmh_CALLBACK');
+                                                            logFirebaseEvent(
+                                                                'QuizOption_update_widget_state');
                                                             setState(() {
                                                               _model.isButtonsActive =
                                                                   false;
@@ -623,12 +652,18 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                             size: 30.0,
                                           ),
                                           onPressed: () async {
+                                            logFirebaseEvent(
+                                                'QUIZ_keyboard_arrow_left_ICN_ON_TAP');
+                                            logFirebaseEvent(
+                                                'IconButton_page_view');
                                             await _model.pageViewController
                                                 ?.previousPage(
                                               duration:
                                                   Duration(milliseconds: 300),
                                               curve: Curves.ease,
                                             );
+                                            logFirebaseEvent(
+                                                'IconButton_update_widget_state');
                                             setState(() {
                                               _model.pageNavigate =
                                                   _model.pageNavigate + -1;
@@ -648,6 +683,9 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                           0.0, 0.0, 10.0, 0.0),
                                       child: FFButtonWidget(
                                         onPressed: () async {
+                                          logFirebaseEvent(
+                                              'QUIZ_PAGE_PAGE_NEXT_BTN_ON_TAP');
+                                          logFirebaseEvent('Button_page_view');
                                           await _model.pageViewController
                                               ?.nextPage(
                                             duration:
@@ -656,11 +694,15 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                           );
                                           if (quizPageCount !=
                                               _model.pageNavigate) {
+                                            logFirebaseEvent(
+                                                'Button_update_widget_state');
                                             setState(() {
                                               _model.pageNavigate =
                                                   _model.pageNavigate + 1;
                                             });
                                           }
+                                          logFirebaseEvent(
+                                              'Button_update_widget_state');
                                           setState(() {
                                             _model.isButtonsActive = true;
                                           });
@@ -701,6 +743,10 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                   Expanded(
                                     child: FFButtonWidget(
                                       onPressed: () async {
+                                        logFirebaseEvent(
+                                            'QUIZ_PAGE_PAGE_COMPLETE_BTN_ON_TAP');
+                                        logFirebaseEvent('Button_navigate_to');
+
                                         context.goNamed(
                                           'ScorePage',
                                           queryParams: {
@@ -715,6 +761,8 @@ class _QuizPageWidgetState extends State<QuizPageWidget> {
                                           }.withoutNulls,
                                         );
 
+                                        logFirebaseEvent(
+                                            'Button_update_app_state');
                                         FFAppState().update(() {
                                           FFAppState().completedQuestions = 0;
                                         });

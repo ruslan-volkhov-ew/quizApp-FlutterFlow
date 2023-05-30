@@ -47,6 +47,8 @@ class _AllQuizBannerWidgetState extends State<AllQuizBannerWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => AllQuizBannerModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -249,7 +251,10 @@ class _AllQuizBannerWidgetState extends State<AllQuizBannerWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
+                    logFirebaseEvent(
+                        'ALL_QUIZ_BANNER_Container_ilni3qni_ON_TA');
                     if (widget.canDelete) {
+                      logFirebaseEvent('Container_execute_callback');
                       await widget.onDelete?.call();
                     }
                   },

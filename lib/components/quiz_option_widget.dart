@@ -39,6 +39,8 @@ class _QuizOptionWidgetState extends State<QuizOptionWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => QuizOptionModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -58,44 +60,55 @@ class _QuizOptionWidgetState extends State<QuizOptionWidget> {
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () async {
+        logFirebaseEvent('QUIZ_OPTION_Container_v1la7lba_ON_TAP');
         if (widget.isActive!) {
           if (widget.isTrue!) {
             if (_model.isAnswered != null) {
+              logFirebaseEvent('Container_update_widget_state');
               setState(() {
                 _model.isAnswered = null;
               });
+              logFirebaseEvent('Container_update_app_state');
               setState(() {
                 FFAppState().completedQuestions =
                     FFAppState().completedQuestions + -1;
               });
+              logFirebaseEvent('Container_update_app_state');
               setState(() {
                 FFAppState().score = FFAppState().score + -1;
               });
             } else {
+              logFirebaseEvent('Container_update_widget_state');
               setState(() {
                 _model.isAnswered = true;
               });
+              logFirebaseEvent('Container_update_app_state');
               setState(() {
                 FFAppState().completedQuestions =
                     FFAppState().completedQuestions + 1;
               });
+              logFirebaseEvent('Container_update_app_state');
               setState(() {
                 FFAppState().score = FFAppState().score + 1;
               });
             }
           } else {
             if (_model.isAnswered != null) {
+              logFirebaseEvent('Container_update_widget_state');
               setState(() {
                 _model.isAnswered = null;
               });
+              logFirebaseEvent('Container_update_app_state');
               setState(() {
                 FFAppState().completedQuestions =
                     FFAppState().completedQuestions + -1;
               });
             } else {
+              logFirebaseEvent('Container_update_widget_state');
               setState(() {
                 _model.isAnswered = false;
               });
+              logFirebaseEvent('Container_update_app_state');
               setState(() {
                 FFAppState().completedQuestions =
                     FFAppState().completedQuestions + 1;
@@ -103,6 +116,7 @@ class _QuizOptionWidgetState extends State<QuizOptionWidget> {
             }
           }
         }
+        logFirebaseEvent('Container_execute_callback');
         await widget.onTap?.call();
       },
       child: Container(

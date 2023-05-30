@@ -16,6 +16,29 @@ import 'jwt_token_auth.dart';
 
 export '../base_auth_user_provider.dart';
 
+class FirebasePhoneAuthManager extends ChangeNotifier {
+  bool? _triggerOnCodeSent;
+  FirebaseAuthException? phoneAuthError;
+  // Set when using phone verification (after phone number is provided).
+  String? phoneAuthVerificationCode;
+  // Set when using phone sign in in web mode (ignored otherwise).
+  ConfirmationResult? webPhoneAuthConfirmationResult;
+  // Used for handling verification codes for phone sign in.
+  void Function(BuildContext)? _onCodeSent;
+
+  bool get triggerOnCodeSent => _triggerOnCodeSent ?? false;
+  set triggerOnCodeSent(bool val) => _triggerOnCodeSent = val;
+
+  void Function(BuildContext) get onCodeSent =>
+      _onCodeSent == null ? (_) {} : _onCodeSent!;
+  set onCodeSent(void Function(BuildContext) func) => _onCodeSent = func;
+
+  void update(VoidCallback callback) {
+    callback();
+    notifyListeners();
+  }
+}
+
 class FirebaseAuthManager extends AuthManager
     with
         EmailSignInManager,
@@ -28,9 +51,11 @@ class FirebaseAuthManager extends AuthManager
   String? _phoneAuthVerificationCode;
   // Set when using phone sign in in web mode (ignored otherwise).
   ConfirmationResult? _webPhoneAuthConfirmationResult;
+  FirebasePhoneAuthManager phoneAuthManager = FirebasePhoneAuthManager();
 
   @override
   Future signOut() {
+    logFirebaseEvent("SIGN_OUT");
     return FirebaseAuth.instance.signOut();
   }
 
@@ -41,6 +66,7 @@ class FirebaseAuthManager extends AuthManager
         print('Error: delete user attempted with no logged in user!');
         return;
       }
+      logFirebaseEvent("DELETE_USER");
       await currentUser?.delete();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
@@ -116,16 +142,37 @@ class FirebaseAuthManager extends AuthManager
           BuildContext context, String jwtToken) =>
       _signInOrCreateAccount(context, () => jwtTokenSignIn(jwtToken), 'JWT');
 
+  void handlePhoneAuthStateChanges(BuildContext context) {
+    phoneAuthManager.addListener(() {
+      if (!context.mounted) {
+        return;
+      }
+
+      if (phoneAuthManager.triggerOnCodeSent) {
+        phoneAuthManager.onCodeSent(context);
+        phoneAuthManager
+            .update(() => phoneAuthManager.triggerOnCodeSent = false);
+      } else if (phoneAuthManager.phoneAuthError != null) {
+        final e = phoneAuthManager.phoneAuthError!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Error: ${e.message!}'),
+        ));
+        phoneAuthManager.update(() => phoneAuthManager.phoneAuthError = null);
+      }
+    });
+  }
+
   @override
   Future beginPhoneAuth({
     required BuildContext context,
     required String phoneNumber,
-    required VoidCallback onCodeSent,
+    required void Function(BuildContext) onCodeSent,
   }) async {
+    phoneAuthManager.update(() => phoneAuthManager.onCodeSent = onCodeSent);
     if (kIsWeb) {
-      _webPhoneAuthConfirmationResult =
+      phoneAuthManager.webPhoneAuthConfirmationResult =
           await FirebaseAuth.instance.signInWithPhoneNumber(phoneNumber);
-      onCodeSent();
+      phoneAuthManager.update(() => phoneAuthManager.triggerOnCodeSent = true);
       return;
     }
     final completer = Completer<bool>();
@@ -139,6 +186,10 @@ class FirebaseAuthManager extends AuthManager
       timeout: Duration(seconds: 5),
       verificationCompleted: (phoneAuthCredential) async {
         await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
+        phoneAuthManager.update(() {
+          phoneAuthManager.triggerOnCodeSent = false;
+          phoneAuthManager.phoneAuthError = null;
+        });
         // If you've implemented auto-verification, navigate to home page or
         // onboarding page here manually. Uncomment the lines below and replace
         // DestinationPage() with the desired widget.
@@ -148,15 +199,19 @@ class FirebaseAuthManager extends AuthManager
         // );
       },
       verificationFailed: (e) {
+        phoneAuthManager.update(() {
+          phoneAuthManager.triggerOnCodeSent = false;
+          phoneAuthManager.phoneAuthError = e;
+        });
         completer.complete(false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${e.message!}'),
-        ));
       },
       codeSent: (verificationId, _) {
-        _phoneAuthVerificationCode = verificationId;
+        phoneAuthManager.update(() {
+          phoneAuthManager.phoneAuthVerificationCode = verificationId;
+          phoneAuthManager.triggerOnCodeSent = true;
+          phoneAuthManager.phoneAuthError = null;
+        });
         completer.complete(true);
-        onCodeSent();
       },
       codeAutoRetrievalTimeout: (_) {},
     );
@@ -172,12 +227,14 @@ class FirebaseAuthManager extends AuthManager
     if (kIsWeb) {
       return _signInOrCreateAccount(
         context,
-        () => _webPhoneAuthConfirmationResult!.confirm(smsCode),
+        () => phoneAuthManager.webPhoneAuthConfirmationResult!.confirm(smsCode),
         'PHONE',
       );
     } else {
       final authCredential = PhoneAuthProvider.credential(
-          verificationId: _phoneAuthVerificationCode!, smsCode: smsCode);
+        verificationId: phoneAuthManager.phoneAuthVerificationCode!,
+        smsCode: smsCode,
+      );
       return _signInOrCreateAccount(
         context,
         () => FirebaseAuth.instance.signInWithCredential(authCredential),
@@ -195,6 +252,7 @@ class FirebaseAuthManager extends AuthManager
   ) async {
     try {
       final userCredential = await signInFunc();
+      logFirebaseAuthEvent(userCredential?.user, authProvider);
       return userCredential == null
           ? null
           : QuizAppFirebaseUser.fromUserCredential(userCredential);

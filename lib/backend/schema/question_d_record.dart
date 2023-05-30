@@ -1,30 +1,35 @@
 import 'dart:async';
 
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
+
 import 'index.dart';
-import 'serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-part 'question_d_record.g.dart';
+class QuestionDRecord extends FirestoreRecord {
+  QuestionDRecord._(
+    DocumentReference reference,
+    Map<String, dynamic> data,
+  ) : super(reference, data) {
+    _initializeFields();
+  }
 
-abstract class QuestionDRecord
-    implements Built<QuestionDRecord, QuestionDRecordBuilder> {
-  static Serializer<QuestionDRecord> get serializer =>
-      _$questionDRecordSerializer;
+  // "question" field.
+  String? _question;
+  String get question => _question ?? '';
+  bool hasQuestion() => _question != null;
 
-  String? get question;
-
-  @BuiltValueField(wireName: 'is_true')
-  bool? get isTrue;
-
-  @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ffRef;
-  DocumentReference get reference => ffRef!;
+  // "is_true" field.
+  bool? _isTrue;
+  bool get isTrue => _isTrue ?? false;
+  bool hasIsTrue() => _isTrue != null;
 
   DocumentReference get parentReference => reference.parent.parent!;
 
-  static void _initializeBuilder(QuestionDRecordBuilder builder) => builder
-    ..question = ''
-    ..isTrue = false;
+  void _initializeFields() {
+    _question = snapshotData['question'] as String?;
+    _isTrue = snapshotData['is_true'] as bool?;
+  }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
       parent != null
@@ -34,35 +39,38 @@ abstract class QuestionDRecord
   static DocumentReference createDoc(DocumentReference parent) =>
       parent.collection('question_d').doc();
 
-  static Stream<QuestionDRecord> getDocument(DocumentReference ref) => ref
-      .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Stream<QuestionDRecord> getDocument(DocumentReference ref) =>
+      ref.snapshots().map((s) => QuestionDRecord.fromSnapshot(s));
 
-  static Future<QuestionDRecord> getDocumentOnce(DocumentReference ref) => ref
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Future<QuestionDRecord> getDocumentOnce(DocumentReference ref) =>
+      ref.get().then((s) => QuestionDRecord.fromSnapshot(s));
 
-  QuestionDRecord._();
-  factory QuestionDRecord([void Function(QuestionDRecordBuilder) updates]) =
-      _$QuestionDRecord;
+  static QuestionDRecord fromSnapshot(DocumentSnapshot snapshot) =>
+      QuestionDRecord._(
+        snapshot.reference,
+        mapFromFirestore(snapshot.data() as Map<String, dynamic>),
+      );
 
   static QuestionDRecord getDocumentFromData(
-          Map<String, dynamic> data, DocumentReference reference) =>
-      serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
+    Map<String, dynamic> data,
+    DocumentReference reference,
+  ) =>
+      QuestionDRecord._(reference, mapFromFirestore(data));
+
+  @override
+  String toString() =>
+      'QuestionDRecord(reference: ${reference.path}, data: $snapshotData)';
 }
 
 Map<String, dynamic> createQuestionDRecordData({
   String? question,
   bool? isTrue,
 }) {
-  final firestoreData = serializers.toFirestore(
-    QuestionDRecord.serializer,
-    QuestionDRecord(
-      (q) => q
-        ..question = question
-        ..isTrue = isTrue,
-    ),
+  final firestoreData = mapToFirestore(
+    <String, dynamic>{
+      'question': question,
+      'is_true': isTrue,
+    }.withoutNulls,
   );
 
   return firestoreData;

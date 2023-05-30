@@ -27,6 +27,8 @@ class _TransparentLoaderWidgetState extends State<TransparentLoaderWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => TransparentLoaderModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

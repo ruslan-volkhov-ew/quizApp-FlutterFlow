@@ -35,9 +35,12 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
     super.initState();
     _model = createModel(context, () => CreateQuizSetModel());
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'CreateQuizSet'});
     _model.titleTextFieldController ??= TextEditingController();
     _model.descriptionTextFieldController ??= TextEditingController();
     _model.durationTextFieldController ??= TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -71,6 +74,8 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
               size: 30.0,
             ),
             onPressed: () async {
+              logFirebaseEvent('CREATE_QUIZ_SET_arrow_back_rounded_ICN_O');
+              logFirebaseEvent('IconButton_navigate_back');
               context.pop();
             },
           ),
@@ -87,6 +92,7 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
           elevation: 0.0,
         ),
         body: SafeArea(
+          top: true,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -118,6 +124,10 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
+                                logFirebaseEvent(
+                                    'CREATE_QUIZ_SET_Column_1qhxtg03_ON_TAP');
+                                logFirebaseEvent(
+                                    'Column_upload_media_to_firebase');
                                 final selectedMedia =
                                     await selectMediaWithSourceBottomSheet(
                                   context: context,
@@ -311,14 +321,20 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                             () => setState(() {}),
                           ),
                           onFieldSubmitted: (_) async {
+                            logFirebaseEvent(
+                                'CREATE_QUIZ_SET_TitleTextField_ON_TEXTFI');
                             if (_model.titleTextFieldController.text != null &&
                                 _model.titleTextFieldController.text != '') {
                               if (!_model.isTitleNotEmpty) {
+                                logFirebaseEvent(
+                                    'TitleTextField_update_widget_state');
                                 setState(() {
                                   _model.isTitleNotEmpty = true;
                                 });
                               }
                             } else {
+                              logFirebaseEvent(
+                                  'TitleTextField_update_widget_state');
                               setState(() {
                                 _model.isTitleNotEmpty = false;
                               });
@@ -534,6 +550,10 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                 0.0, 12.0, 0.0, 0.0),
                             child: FFButtonWidget(
                               onPressed: () async {
+                                logFirebaseEvent(
+                                    'CREATE_QUIZ_SET_CREATE_SET_BTN_ON_TAP');
+                                logFirebaseEvent('Button_backend_call');
+
                                 final quizSetCreateData =
                                     createQuizSetRecordData(
                                   quizName:
@@ -549,6 +569,7 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                 await QuizSetRecord.collection
                                     .doc()
                                     .set(quizSetCreateData);
+                                logFirebaseEvent('Button_show_snack_bar');
                                 ScaffoldMessenger.of(context).clearSnackBars();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -685,6 +706,10 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
+                                logFirebaseEvent(
+                                    'CREATE_QUIZ_SET_Container_zz0g1zow_ON_TA');
+                                logFirebaseEvent('QuizSets_navigate_to');
+
                                 context.pushNamed(
                                   'AddQuiz',
                                   queryParams: {
@@ -698,13 +723,13 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                               child: QuizSetsWidget(
                                 key: Key(
                                     'Keyzz0_${listViewIndex}_of_${listViewQuizSetRecordList.length}'),
-                                title: listViewQuizSetRecord.quizName!,
-                                description: listViewQuizSetRecord.description!,
+                                title: listViewQuizSetRecord.quizName,
+                                description: listViewQuizSetRecord.description,
                                 totalQuestions:
-                                    listViewQuizSetRecord.totalQuestions!,
+                                    listViewQuizSetRecord.totalQuestions,
                                 quizDuration:
-                                    listViewQuizSetRecord.duration!.toDouble(),
-                                coverImage: listViewQuizSetRecord.coverPhoto!,
+                                    listViewQuizSetRecord.duration.toDouble(),
+                                coverImage: listViewQuizSetRecord.coverPhoto,
                                 canEdit:
                                     (listViewQuizSetRecord.userId != null &&
                                                 listViewQuizSetRecord.userId !=
@@ -715,6 +740,9 @@ class _CreateQuizSetWidgetState extends State<CreateQuizSetWidget> {
                                         : false,
                                 quizIds: listViewQuizSetRecord.reference.id,
                                 onDelete: () async {
+                                  logFirebaseEvent(
+                                      'CREATE_QUIZ_SET_Container_zz0g1zow_CALLB');
+                                  logFirebaseEvent('QuizSets_backend_call');
                                   await listViewQuizSetRecord.reference
                                       .delete();
                                 },

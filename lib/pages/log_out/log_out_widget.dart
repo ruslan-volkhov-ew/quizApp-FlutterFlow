@@ -26,6 +26,9 @@ class _LogOutWidgetState extends State<LogOutWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => LogOutModel());
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'LogOut'});
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -59,6 +62,8 @@ class _LogOutWidgetState extends State<LogOutWidget> {
               size: 30.0,
             ),
             onPressed: () async {
+              logFirebaseEvent('LOG_OUT_arrow_back_rounded_ICN_ON_TAP');
+              logFirebaseEvent('IconButton_navigate_back');
               context.pop();
             },
           ),
@@ -75,6 +80,7 @@ class _LogOutWidgetState extends State<LogOutWidget> {
           elevation: 2.0,
         ),
         body: SafeArea(
+          top: true,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -93,11 +99,16 @@ class _LogOutWidgetState extends State<LogOutWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
                 child: FFButtonWidget(
                   onPressed: () async {
+                    logFirebaseEvent(
+                        'LOG_OUT_YES,_I_WANT_TO_LOG_OUT!_BTN_ON_T');
+                    logFirebaseEvent('Button_auth');
                     GoRouter.of(context).prepareAuthEvent();
                     await authManager.signOut();
                     GoRouter.of(context).clearRedirectLocation();
 
-                    context.pushNamedAuth('Authentication', mounted);
+                    logFirebaseEvent('Button_navigate_to');
+
+                    context.pushNamedAuth('Authentication', context.mounted);
                   },
                   text: 'Yes, I want to log out!',
                   options: FFButtonOptions(

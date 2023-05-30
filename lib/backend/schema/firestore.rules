@@ -5,14 +5,14 @@ service cloud.firestore {
       allow create: if true;
       allow read: if true;
       allow write: if false;
-      allow delete: if false;
+      allow delete: if request.auth != null;
     }
 
     match /quiz/{document} {
       allow create: if true;
       allow read: if true;
       allow write: if false;
-      allow delete: if false;
+      allow delete: if request.auth != null;
     }
 
     match /quiz/{parent}/question_a/{document} {
