@@ -120,44 +120,42 @@ class _FlutterFlowIconButtonState extends State<FlutterFlowIconButton> {
     return SizedBox(
       width: widget.buttonSize,
       height: widget.buttonSize,
-      child: (widget.showLoadingIndicator && loading)
-          ? Center(
-              child: Container(
-                width: iconSize,
-                height: iconSize,
-                color: widget.onPressed != null
-                    ? widget.fillColor
-                    : widget.disabledColor,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    iconColor ?? Colors.white,
-                  ),
-                ),
-              ),
-            )
-          : Theme(
-              data: Theme.of(context).copyWith(useMaterial3: true),
-              child: IconButton(
-                icon: effectiveIcon,
-                onPressed: widget.onPressed == null
-                    ? null
-                    : () async {
-                        if (loading) {
-                          return;
-                        }
-                        setState(() => loading = true);
-                        try {
-                          await widget.onPressed!();
-                        } finally {
-                          if (mounted) {
-                            setState(() => loading = false);
-                          }
-                        }
-                      },
-                splashRadius: widget.buttonSize,
-                style: style,
-              ),
-            ),
+      child: Theme(
+        data: Theme.of(context).copyWith(useMaterial3: true),
+        child: IgnorePointer(
+          ignoring: (widget.showLoadingIndicator && loading),
+          child: IconButton(
+            icon: (widget.showLoadingIndicator && loading)
+                ? Container(
+                    width: iconSize,
+                    height: iconSize,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        iconColor ?? Colors.white,
+                      ),
+                    ),
+                  )
+                : effectiveIcon,
+            onPressed: widget.onPressed == null
+                ? null
+                : () async {
+                    if (loading) {
+                      return;
+                    }
+                    setState(() => loading = true);
+                    try {
+                      await widget.onPressed!();
+                    } finally {
+                      if (mounted) {
+                        setState(() => loading = false);
+                      }
+                    }
+                  },
+            splashRadius: widget.buttonSize,
+            style: style,
+          ),
+        ),
+      ),
     );
   }
 }

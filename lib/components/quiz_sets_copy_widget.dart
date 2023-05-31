@@ -40,6 +40,8 @@ class _QuizSetsCopyWidgetState extends State<QuizSetsCopyWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => QuizSetsCopyModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

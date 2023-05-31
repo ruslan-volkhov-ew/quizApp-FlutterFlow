@@ -46,7 +46,7 @@ mixin PhoneSignInManager on AuthManager {
   Future beginPhoneAuth({
     required BuildContext context,
     required String phoneNumber,
-    required VoidCallback onCodeSent,
+    required void Function(BuildContext) onCodeSent,
   });
 
   Future verifySmsCode({

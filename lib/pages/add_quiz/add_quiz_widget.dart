@@ -36,11 +36,13 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
     super.initState();
     _model = createModel(context, () => AddQuizModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'AddQuiz'});
     _model.textController1 ??= TextEditingController();
     _model.textController2 ??= TextEditingController();
     _model.textController3 ??= TextEditingController();
     _model.textController4 ??= TextEditingController();
     _model.textController5 ??= TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -74,6 +76,8 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
               size: 30.0,
             ),
             onPressed: () async {
+              logFirebaseEvent('ADD_QUIZ_arrow_back_rounded_ICN_ON_TAP');
+              logFirebaseEvent('IconButton_navigate_back');
               context.pop();
             },
           ),
@@ -95,6 +99,7 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
           elevation: 2.0,
         ),
         body: SafeArea(
+          top: true,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -241,6 +246,10 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
+                                    logFirebaseEvent(
+                                        'ADD_QUIZ_PAGE_Container_pw92z9h2_ON_TAP');
+                                    logFirebaseEvent(
+                                        'Container_update_widget_state');
                                     setState(() {
                                       _model.optionA = !_model.optionA;
                                       _model.optionB = false;
@@ -403,6 +412,10 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
+                                    logFirebaseEvent(
+                                        'ADD_QUIZ_PAGE_Container_lpnm99a4_ON_TAP');
+                                    logFirebaseEvent(
+                                        'Container_update_widget_state');
                                     setState(() {
                                       _model.optionA = false;
                                       _model.optionB = !_model.optionB;
@@ -565,6 +578,10 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
+                                    logFirebaseEvent(
+                                        'ADD_QUIZ_PAGE_Container_uzp01b4t_ON_TAP');
+                                    logFirebaseEvent(
+                                        'Container_update_widget_state');
                                     setState(() {
                                       _model.optionA = false;
                                       _model.optionB = false;
@@ -727,6 +744,10 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
+                                    logFirebaseEvent(
+                                        'ADD_QUIZ_PAGE_Container_1ibpvjwp_ON_TAP');
+                                    logFirebaseEvent(
+                                        'Container_update_widget_state');
                                     setState(() {
                                       _model.optionA = false;
                                       _model.optionB = false;
@@ -804,6 +825,9 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                       EdgeInsetsDirectional.fromSTEB(20.0, 10.0, 20.0, 0.0),
                   child: FFButtonWidget(
                     onPressed: () async {
+                      logFirebaseEvent('ADD_QUIZ_PAGE_ADD_QUESTION_BTN_ON_TAP');
+                      logFirebaseEvent('Button_backend_call');
+
                       final quizCreateData = createQuizRecordData(
                         id: 1,
                         question: _model.textController1.text,
@@ -814,6 +838,7 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                       _model.quizCreateResponse =
                           QuizRecord.getDocumentFromData(
                               quizCreateData, quizRecordReference);
+                      logFirebaseEvent('Button_backend_call');
 
                       final questionACreateData = createQuestionARecordData(
                         question: _model.textController2.text,
@@ -822,6 +847,7 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                       await QuestionARecord.createDoc(
                               _model.quizCreateResponse!.reference)
                           .set(questionACreateData);
+                      logFirebaseEvent('Button_backend_call');
 
                       final questionBCreateData = createQuestionBRecordData(
                         question: _model.textController3.text,
@@ -830,6 +856,7 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                       await QuestionBRecord.createDoc(
                               _model.quizCreateResponse!.reference)
                           .set(questionBCreateData);
+                      logFirebaseEvent('Button_backend_call');
 
                       final questionCCreateData = createQuestionCRecordData(
                         question: _model.textController4.text,
@@ -838,6 +865,7 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                       await QuestionCRecord.createDoc(
                               _model.quizCreateResponse!.reference)
                           .set(questionCCreateData);
+                      logFirebaseEvent('Button_backend_call');
 
                       final questionDCreateData = createQuestionDRecordData(
                         question: _model.textController5.text,
@@ -846,11 +874,13 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                       await QuestionDRecord.createDoc(
                               _model.quizCreateResponse!.reference)
                           .set(questionDCreateData);
+                      logFirebaseEvent('Button_backend_call');
 
                       final quizSetUpdateData = {
                         'total_questions': FieldValue.increment(1),
                       };
                       await widget.quizSet!.update(quizSetUpdateData);
+                      logFirebaseEvent('Button_clear_text_fields');
                       setState(() {
                         _model.textController1?.clear();
                         _model.textController2?.clear();
@@ -858,12 +888,14 @@ class _AddQuizWidgetState extends State<AddQuizWidget> {
                         _model.textController4?.clear();
                         _model.textController5?.clear();
                       });
+                      logFirebaseEvent('Button_update_widget_state');
                       setState(() {
                         _model.optionA = false;
                         _model.optionB = false;
                         _model.optionC = false;
                         _model.optionD = false;
                       });
+                      logFirebaseEvent('Button_show_snack_bar');
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

@@ -85,6 +85,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'HomePage'});
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -106,6 +110,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
         backgroundColor: Color(0xFF1A1A2F),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
+            logFirebaseEvent('HOME_FloatingActionButton_gcajojtc_ON_TA');
+            logFirebaseEvent('FloatingActionButton_navigate_to');
+
             context.pushNamed('CreateQuizSet');
           },
           backgroundColor: Color(0xFF0038FF),
@@ -144,6 +151,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () async {
+                      logFirebaseEvent(
+                          'HOME_PAGE_PAGE_Container_46l3iyjm_ON_TAP');
+                      logFirebaseEvent('Container_navigate_to');
+
                       context.pushNamed('LogOut');
                     },
                     child: Container(
@@ -174,6 +185,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           elevation: 2.0,
         ),
         body: SafeArea(
+          top: true,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -204,6 +216,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
+                              logFirebaseEvent(
+                                  'HOME_PAGE_PAGE_Text_c6qvfwxm_ON_TAP');
+                              logFirebaseEvent('Text_navigate_to');
+
                               context.pushNamed('ShowAllQuiz');
                             },
                             child: Text(
@@ -267,6 +283,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
+                                logFirebaseEvent(
+                                    'HOME_PAGE_PAGE_QuizSetsMainScreen_ON_TAP');
+                                logFirebaseEvent(
+                                    'QuizSetsMainScreen_navigate_to');
+
                                 context.pushNamed(
                                   'QuizPage',
                                   queryParams: {
@@ -281,6 +302,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   }.withoutNulls,
                                 );
 
+                                logFirebaseEvent(
+                                    'QuizSetsMainScreen_update_app_state');
                                 setState(() {
                                   FFAppState().score = 0;
                                 });
@@ -288,13 +311,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: QuizSetsCopyWidget(
                                 key: Key(
                                     'Keyh1j_${listViewIndex}_of_${listViewQuizSetRecordList.length}'),
-                                title: listViewQuizSetRecord.quizName!,
-                                description: listViewQuizSetRecord.description!,
+                                title: listViewQuizSetRecord.quizName,
+                                description: listViewQuizSetRecord.description,
                                 totalQuestions:
-                                    listViewQuizSetRecord.totalQuestions!,
+                                    listViewQuizSetRecord.totalQuestions,
                                 quizDuration:
-                                    listViewQuizSetRecord.duration!.toDouble(),
-                                coverImage: listViewQuizSetRecord.coverPhoto!,
+                                    listViewQuizSetRecord.duration.toDouble(),
+                                coverImage: listViewQuizSetRecord.coverPhoto,
                               ),
                             ),
                           );

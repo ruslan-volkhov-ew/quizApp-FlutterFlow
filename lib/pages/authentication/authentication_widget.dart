@@ -57,10 +57,14 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
     super.initState();
     _model = createModel(context, () => AuthenticationModel());
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'Authentication'});
     _model.emailController ??= TextEditingController();
     _model.passwordController ??= TextEditingController();
     _model.email2Controller ??= TextEditingController();
     _model.password2Controller ??= TextEditingController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -81,6 +85,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
         key: scaffoldKey,
         backgroundColor: Color(0xFF1A1A2F),
         body: SafeArea(
+          top: true,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -335,6 +340,9 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             20.0, 20.0, 20.0, 0.0),
                                         child: FFButtonWidget(
                                           onPressed: () async {
+                                            logFirebaseEvent(
+                                                'AUTHENTICATION_PAGE_LOGIN_BTN_ON_TAP');
+                                            logFirebaseEvent('Button_auth');
                                             GoRouter.of(context)
                                                 .prepareAuthEvent();
 
@@ -349,7 +357,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             }
 
                                             context.goNamedAuth(
-                                                'HomePage', mounted);
+                                                'HomePage', context.mounted);
                                           },
                                           text: 'Login',
                                           options: FFButtonOptions(
@@ -576,6 +584,9 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             20.0, 20.0, 20.0, 0.0),
                                         child: FFButtonWidget(
                                           onPressed: () async {
+                                            logFirebaseEvent(
+                                                'AUTHENTICATION_PAGE_REGISTER_BTN_ON_TAP');
+                                            logFirebaseEvent('Button_auth');
                                             GoRouter.of(context)
                                                 .prepareAuthEvent();
 
@@ -590,7 +601,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                             }
 
                                             context.goNamedAuth(
-                                                'HomePage', mounted);
+                                                'HomePage', context.mounted);
                                           },
                                           text: 'Register',
                                           options: FFButtonOptions(

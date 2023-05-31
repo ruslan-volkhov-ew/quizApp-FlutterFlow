@@ -109,6 +109,10 @@ class _ScorePageWidgetState extends State<ScorePageWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => ScorePageModel());
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'ScorePage'});
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -129,6 +133,7 @@ class _ScorePageWidgetState extends State<ScorePageWidget>
         key: scaffoldKey,
         backgroundColor: Color(0xFF1A1A2F),
         body: SafeArea(
+          top: true,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,6 +154,9 @@ class _ScorePageWidgetState extends State<ScorePageWidget>
                       size: 30.0,
                     ),
                     onPressed: () async {
+                      logFirebaseEvent('SCORE_PAGE_PAGE_close_ICN_ON_TAP');
+                      logFirebaseEvent('IconButton_navigate_to');
+
                       context.goNamed(
                         'HomePage',
                         extra: <String, dynamic>{

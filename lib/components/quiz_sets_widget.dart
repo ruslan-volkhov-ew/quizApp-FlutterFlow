@@ -47,6 +47,8 @@ class _QuizSetsWidgetState extends State<QuizSetsWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => QuizSetsModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -257,6 +259,9 @@ class _QuizSetsWidgetState extends State<QuizSetsWidget> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () async {
+                    logFirebaseEvent(
+                        'QUIZ_SETS_COMP_Container_3at3iqkv_ON_TAP');
+                    logFirebaseEvent('Container_execute_callback');
                     await widget.onDelete?.call();
                   },
                   child: Container(

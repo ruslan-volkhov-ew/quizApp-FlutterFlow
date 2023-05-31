@@ -10,7 +10,8 @@ Future initFirebase() async {
             projectId: "quizapp-69a6b",
             storageBucket: "quizapp-69a6b.appspot.com",
             messagingSenderId: "478690371739",
-            appId: "1:478690371739:web:e2ff63b67fcee031287e3e"));
+            appId: "1:478690371739:web:e2ff63b67fcee031287e3e",
+            measurementId: "G-PSPHZK6VY8"));
   } else {
     await Firebase.initializeApp();
   }

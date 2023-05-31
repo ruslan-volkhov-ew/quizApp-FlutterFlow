@@ -26,20 +26,23 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   auto_size_text: 3.0.0
-  built_collection: 5.1.1
-  built_value: 8.4.3
   cached_network_image: 3.2.1
   cloud_firestore: 4.2.0
   cloud_firestore_platform_interface: 5.9.1
   cloud_firestore_web: 3.1.1
   easy_debounce: 2.0.1
   file_picker: 5.2.6
+  firebase_analytics: 10.0.7
+  firebase_analytics_platform_interface: 3.3.15
+  firebase_analytics_web: 0.5.1+6
   firebase_auth: 4.2.0
   firebase_auth_platform_interface: 6.11.4
   firebase_auth_web: 5.2.0
   firebase_core: 2.4.0
   firebase_core_platform_interface: 4.5.2
   firebase_core_web: 2.0.2
+  firebase_crashlytics: 3.0.7
+  firebase_crashlytics_platform_interface: 3.3.8
   firebase_storage: 11.0.7
   firebase_storage_platform_interface: 4.1.25
   firebase_storage_web: 3.3.17
@@ -62,7 +65,6 @@ dependencies:
   image_picker_platform_interface: 2.6.2
   intl: 0.17.0
   json_path: 0.4.1
-  json_serializable: 6.6.1
   lottie: 1.2.1
   mime_type: 1.0.0
   page_transition: 2.0.4
@@ -84,6 +86,8 @@ dependencies:
   sign_in_with_apple_web: 1.0.1
   sqflite: 2.2.6
   stop_watch_timer: 1.5.0
+  stream_transform: 2.1.0
+  text_search: 0.0.2
   timeago: 3.2.2
   url_launcher: 6.1.10
   url_launcher_android: 6.0.27
@@ -102,9 +106,6 @@ dependencies:
   device_preview: ^1.1.0
 
 dev_dependencies:
-  analyzer: 5.10.0
-  build_runner: 2.3.3
-  built_value_generator: 8.4.3
 
   flutter_test:
     sdk: flutter
