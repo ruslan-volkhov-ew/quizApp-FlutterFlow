@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../pages/authentication/authentication_widget.dart';
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -34,7 +35,12 @@ class QuestionBRecord extends FirestoreRecord {
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
       parent != null
           ? parent.collection('question_b')
-          : FirebaseFirestore.instance.collectionGroup('question_b');
+          : firebaseApp == null
+              ? FirebaseFirestore.instance.collectionGroup('question_b')
+              : FirebaseFirestore.instanceFor(app: firebaseApp!)
+                  .collectionGroup('question_b');
+
+  // FirebaseFirestore.instance.collectionGroup('question_b');
 
   static DocumentReference createDoc(DocumentReference parent) =>
       parent.collection('question_b').doc();

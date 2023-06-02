@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'base_auth_user_provider.dart';
@@ -14,6 +15,7 @@ mixin EmailSignInManager on AuthManager {
     BuildContext context,
     String email,
     String password,
+    FirebaseApp? firebaseApp,
   );
 
   Future<BaseAuthUser?> createAccountWithEmail(

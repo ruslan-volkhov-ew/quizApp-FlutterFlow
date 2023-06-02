@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
 
+import '../pages/authentication/authentication_widget.dart';
 import 'lat_lng.dart';
 
 export 'keep_alive_wrapper.dart';
@@ -224,7 +225,10 @@ extension IterableExt<T> on Iterable<T> {
 }
 
 extension StringDocRef on String {
-  DocumentReference get ref => FirebaseFirestore.instance.doc(this);
+  DocumentReference get ref => firebaseApp == null
+      ? FirebaseFirestore.instance.doc(this)
+      : FirebaseFirestore.instanceFor(app: firebaseApp!).doc(this);
+  // FirebaseFirestore.instance.doc(this);
 }
 
 void setAppLanguage(BuildContext context, String language) =>

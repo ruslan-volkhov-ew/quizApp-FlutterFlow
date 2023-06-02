@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 
+import '../../../pages/authentication/authentication_widget.dart';
 import '/backend/schema/util/schema_util.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -109,7 +110,11 @@ extension LatLngExtension on GeoPoint {
   LatLng toLatLng() => LatLng(latitude, longitude);
 }
 
-DocumentReference toRef(String ref) => FirebaseFirestore.instance.doc(ref);
+DocumentReference toRef(String ref) => firebaseApp == null
+    ? FirebaseFirestore.instance.doc(ref)
+    : FirebaseFirestore.instanceFor(app: firebaseApp!).doc(ref);
+
+// FirebaseFirestore.instance.doc(ref);
 
 T? safeGet<T>(T Function() func, [Function(dynamic)? reportError]) {
   try {

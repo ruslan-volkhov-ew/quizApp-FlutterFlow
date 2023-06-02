@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -104,10 +105,15 @@ class FirebaseAuthManager extends AuthManager
     BuildContext context,
     String email,
     String password,
+    FirebaseApp? firebaseApp,
   ) =>
       _signInOrCreateAccount(
         context,
-        () => emailSignInFunc(email, password),
+        () => emailSignInFunc(
+          email,
+          password,
+          firebaseApp,
+        ),
         'EMAIL',
       );
 

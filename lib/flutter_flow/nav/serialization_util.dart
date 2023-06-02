@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 
+import '../../pages/authentication/authentication_widget.dart';
 import '/backend/backend.dart';
 
 import '../../flutter_flow/lat_lng.dart';
@@ -160,7 +161,10 @@ DocumentReference _deserializeDocumentReference(
   for (int i = 0; i < docIds.length && i < collectionNamePath.length; i++) {
     path += '/${collectionNamePath[i]}/${docIds[i]}';
   }
-  return FirebaseFirestore.instance.doc(path);
+  return firebaseApp == null
+      ? FirebaseFirestore.instance.doc(path)
+      : FirebaseFirestore.instanceFor(app: firebaseApp!).doc(path);
+//                  FirebaseFirestore.instance.doc(path);
 }
 
 enum ParamType {

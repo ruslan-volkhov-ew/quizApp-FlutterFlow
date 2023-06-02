@@ -1,3 +1,5 @@
+import 'package:quiz_app/backend/firebase/firebase_config.dart';
+
 import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -10,6 +12,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'authentication_model.dart';
 export 'authentication_model.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+FirebaseApp? firebaseApp;
 
 class AuthenticationWidget extends StatefulWidget {
   const AuthenticationWidget({Key? key}) : super(key: key);
@@ -348,10 +354,11 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
 
                                             final user = await authManager
                                                 .signInWithEmail(
-                                              context,
-                                              _model.emailController.text,
-                                              _model.passwordController.text,
-                                            );
+                                                    context,
+                                                    _model.emailController.text,
+                                                    _model.passwordController
+                                                        .text,
+                                                    firebaseApp);
                                             if (user == null) {
                                               return;
                                             }
@@ -360,6 +367,92 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget>
                                                 'HomePage', context.mounted);
                                           },
                                           text: 'Login',
+                                          options: FFButtonOptions(
+                                            width: double.infinity,
+                                            height: 40.0,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Colors.white,
+                                                    ),
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 20.0, 0.0),
+                                        child: FFButtonWidget(
+                                          onPressed: () async {
+                                            logFirebaseEvent(
+                                                'Change_FIREBASE_BTN_ON_TAP');
+
+                                            final base2App =
+                                                await initializeFirebaseApp(
+                                                    'new1-quizapp');
+                                            firebaseApp = base2App;
+                                            // setState(
+                                            //   () => firebaseApp = base2App,
+                                            // );
+                                          },
+                                          text:
+                                              'Change Firebase to new1-quizapp',
+                                          options: FFButtonOptions(
+                                            width: double.infinity,
+                                            height: 40.0,
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            iconPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .override(
+                                                      fontFamily: 'Poppins',
+                                                      color: Colors.white,
+                                                    ),
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 20.0, 0.0),
+                                        child: FFButtonWidget(
+                                          onPressed: () async {
+                                            logFirebaseEvent(
+                                                'Change_FIREBASE_BTN_ON_TAP');
+
+                                            final base2App =
+                                                await initializeFirebaseApp(
+                                                    'quizapp');
+                                            firebaseApp = base2App;
+                                          },
+                                          text: 'Change Firebase quizapp',
                                           options: FFButtonOptions(
                                             width: double.infinity,
                                             height: 40.0,

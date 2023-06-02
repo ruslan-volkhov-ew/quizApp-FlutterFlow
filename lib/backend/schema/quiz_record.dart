@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../pages/authentication/authentication_widget.dart';
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -35,8 +36,10 @@ class QuizRecord extends FirestoreRecord {
     _quizSet = snapshotData['quiz_set'] as DocumentReference?;
   }
 
-  static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('quiz');
+  static CollectionReference get collection => firebaseApp == null
+      ? FirebaseFirestore.instance.collection('quiz')
+      : FirebaseFirestore.instanceFor(app: firebaseApp!).collection('quiz');
+  // FirebaseFirestore.instance.collection('quiz');
 
   static Stream<QuizRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => QuizRecord.fromSnapshot(s));
