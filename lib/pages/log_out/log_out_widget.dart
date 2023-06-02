@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -69,21 +67,16 @@ class _LogOutWidgetState extends State<LogOutWidget> {
               context.pop();
             },
           ),
-          title: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-                0.0, kIsWeb ? 30.0 : 0, 0.0, 0.0),
-            child: Text(
-              'Log Out',
-              style: FlutterFlowTheme.of(context).headlineMedium.override(
-                    fontFamily: 'Poppins',
-                    color: Colors.white,
-                    fontSize: 22.0,
-                  ),
-            ),
+          title: Text(
+            'Log Out',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontSize: 22.0,
+                ),
           ),
           actions: [],
           centerTitle: true,
-          toolbarHeight: kIsWeb ? 70.0 : null,
           elevation: 2.0,
         ),
         body: SafeArea(

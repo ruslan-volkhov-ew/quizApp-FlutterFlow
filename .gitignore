@@ -36,6 +36,7 @@
 .firebase/
 
 # Web related
+lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols
@@ -47,5 +48,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-.fvm/flutter_sdk
-.fvm/fvm_config.json

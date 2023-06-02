@@ -1,5 +1,3 @@
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -27,26 +25,14 @@ void main() async {
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
 
-
   if (!kIsWeb) {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => appState,
-      child: DevicePreview(
-        enabled: kIsWeb,
-        builder: ((context) => MyApp()),
-        isToolbarVisible: false,
-        data: DevicePreviewData(
-          deviceIdentifier: Devices.ios.iPhoneSE.toString(),
-          isFrameVisible: true,
-        ),
-      ),
-    ),
-  );
-
+  runApp(ChangeNotifierProvider(
+    create: (context) => appState,
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -92,7 +78,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // print(DevicePreview.selectedDevice(context));
     return MaterialApp.router(
       title: 'QuizApp',
       localizationsDelegates: [
